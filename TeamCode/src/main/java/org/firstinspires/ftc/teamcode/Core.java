@@ -11,9 +11,7 @@ public class Core {
     public void setHardwareMap() {
         leftMotor = (DcMotor)hwMap.get("leftMotor");
         rightMotor = (DcMotor)hwMap.get("rightMotor");
-        /* Place the hardware map of the right engine here, to create do the following:
-        take the engine variable you created and assign its type followed by Hardware Map.get ("here you name the variable").
-        This sequence will make the robot's engine connect to the variable you created.*/
+       
     }
 
 }
