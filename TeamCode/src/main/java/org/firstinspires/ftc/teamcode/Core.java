@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Core {
-    private DcMotor leftMotor; // This variable will be responsible for the left engine.
+    protected DcMotor leftMotor; // This variable will be responsible for the left engine.
     // Place the variable responsible for the right engine here.
-    private HardwareMap hwMap; // This variable will be responsible for the hardware map.
+    protected HardwareMap hwMap; // This variable will be responsible for the hardware map.
 
     public void setHardwareMap() {
         leftMotor = (DcMotor)hwMap.get("leftMotor");
