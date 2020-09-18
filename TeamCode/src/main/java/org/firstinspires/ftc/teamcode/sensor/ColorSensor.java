@@ -9,9 +9,8 @@ import org.firstinspires.ftc.teamcode.Core;
 
 public class ColorSensor extends Core implements InterfaceSensor {
 
-    private String sensorName = super.colorSensor.getDeviceName();
-    private Core core = new Core();
-    private NormalizedRGBA colors = colorSensor.getNormalizedColors();
+    private String sensorName = super.colorSensor.getDeviceName(); // Gets the name of the device being used as a sensor
+    private NormalizedRGBA colors = colorSensor.getNormalizedColors(); // Get colors in RGB form
     private String reading;
 
 
