@@ -14,6 +14,16 @@ public class ColorSensor extends Core implements InterfaceSensor {
     private String reading;
 
 
+    private String calculateColor(Float red, Float green, Float blue) {
+        if (red > green && red > blue) {
+            return "Red";
+        } else if (green > red && green > blue) {
+            return "Green";
+        }  else {
+            return "Blue";
+        }
+    }
+
     @Override
     public String sensorName() {
         return sensorName;
@@ -21,11 +31,7 @@ public class ColorSensor extends Core implements InterfaceSensor {
 
     @Override
     public String getReading() {
-        reading = "" +
-                "Alpha = " + colors.alpha +
-                "Red = " + colors.red +
-                "Green = " + colors.green +
-                "Blue = " + colors.blue;
+        reading = calculateColor(colors.red, colors.green, colors.blue);
         return reading;
     }
 }
