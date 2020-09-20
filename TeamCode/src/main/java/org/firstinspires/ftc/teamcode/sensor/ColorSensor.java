@@ -27,7 +27,6 @@ public class ColorSensor extends Core implements InterfaceSensor {
 
     @Override
     public String getReading() {
-        String reading = calculateColor(colors.red, colors.green, colors.blue);
-        return reading;
+        return calculateColor(colors.red, colors.green, colors.blue);
     }
 }
