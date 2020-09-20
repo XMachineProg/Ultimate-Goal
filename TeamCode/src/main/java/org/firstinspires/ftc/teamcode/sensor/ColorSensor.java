@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.sensor;
 
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.teamcode.Core;
@@ -9,7 +8,6 @@ public class ColorSensor extends Core implements InterfaceSensor {
 
     private String sensorName = super.colorSensor.getDeviceName(); // Gets the name of the device being used as a sensor
     private NormalizedRGBA colors = colorSensor.getNormalizedColors(); // Get colors in RGB form
-    private String reading;
 
 
     private String calculateColor(Float red, Float green, Float blue) {
@@ -29,7 +27,7 @@ public class ColorSensor extends Core implements InterfaceSensor {
 
     @Override
     public String getReading() {
-        reading = calculateColor(colors.red, colors.green, colors.blue);
+        String reading = calculateColor(colors.red, colors.green, colors.blue);
         return reading;
     }
 }
