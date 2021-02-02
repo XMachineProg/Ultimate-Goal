@@ -10,22 +10,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Disabled
 public class Core extends LinearOpMode {
-    public DcMotor leftMotor; // This variable will be responsible for the left engine.
-    public DcMotor rightMotor; // This variable will be responsible for the right engine.
-    protected HardwareMap hwMap; // This variable will be responsible for the hardware map.
-    protected NormalizedColorSensor colorSensor;
+    //public DcMotor leftMotor = null; // This variable will be responsible for the left engine.
+    //public DcMotor rightMotor = null; // This variable will be responsible for the right engine.
+    //protected NormalizedColorSensor colorSensor;
     //private Telemetry tlmtr;
 
-    public void setHardwareMap() {
-        leftMotor = (DcMotor)hwMap.get("leftMotor");
-        rightMotor = (DcMotor)hwMap.get("rightMotor");
-        colorSensor = (NormalizedColorSensor)hwMap.get("colorSensor");
-        telemetry.addData("Hardware Map -> ", "Loaded!");
-
-    }
 
     @Override
     public void runOpMode() throws InterruptedException {
+
 
     }
 }
