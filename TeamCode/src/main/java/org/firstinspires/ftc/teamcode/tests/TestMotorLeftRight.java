@@ -32,6 +32,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -39,6 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Core;
+import org.firstinspires.ftc.teamcode.motors.EngineMoviment;
 import org.firstinspires.ftc.teamcode.sensor.ColorSensor;
 
 
@@ -60,17 +62,18 @@ public class TestMotorLeftRight extends LinearOpMode {
 
     private ColorSensor core = new ColorSensor();
 
-    // Declare OpMode members.
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+
+    private DcMotor leftEngine = null;
+    private DcMotor rightEngine = null;
     private NormalizedColorSensor colorSensor = null;
     private EngineMoviment em = new EngineMoviment();
 
     public void setHardwareMap() {
         leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
+        rightEngine = hardwareMap.get(DcMotor.class, "rightMotor");
         colorSensor = (NormalizedColorSensor)hardwareMap.get("colorSensor");
         telemetry.addData("201", "Added to hardware list:" +
-                hardwareMap.getNamesOf(leftDrive) + "  " + hardwareMap.getNamesOf(rightDrive));
+                hardwareMap.getNamesOf(leftEngine) + "  " + hardwareMap.getNamesOf(rightEngine));
         telemetry.update();
 
     }
@@ -80,7 +83,7 @@ public class TestMotorLeftRight extends LinearOpMode {
 
 
         setHardwareMap(); // Return to setHardwareMap method
-
+        leftEngine.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
@@ -90,6 +93,18 @@ public class TestMotorLeftRight extends LinearOpMode {
             telemetry.update();
             telemetry.addData(core.getReading(colorSensor), "202");
             telemetry.addData(core.sensorName(colorSensor), "202");
+            telemetry.addData("100", "Intializing Engines");
+            telemetry.update();
+            try {em.turnLeft(leftEngine, rightEngine, 5000); } catch (Exception e) { telemetry.addData("500", "" + e.getMessage()); }
+            try {em.turnRight(leftEngine, rightEngine, 5000); } catch (Exception e) { telemetry.addData("500", "" + e.getMessage()); }
+            try {em.straightAhead(leftEngine, rightEngine, 5000); } catch (Exception e) { telemetry.addData("500", "" + e.getMessage()); }
+            try {em.goBack(leftEngine, rightEngine, 5000); } catch (Exception e) { telemetry.addData("500", "" + e.getMessage()); }
+
+
+
+
+
+            break;
         }
     }
 }
