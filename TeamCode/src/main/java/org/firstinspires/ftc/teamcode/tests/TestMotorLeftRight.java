@@ -64,10 +64,10 @@ public class TestMotorLeftRight extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private NormalizedColorSensor colorSensor = null;
+    private EngineMoviment em = new EngineMoviment();
 
     public void setHardwareMap() {
-        leftDrive = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightDrive = hardwareMap.get(DcMotor.class, "rightMotor");
+        leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
         colorSensor = (NormalizedColorSensor)hardwareMap.get("colorSensor");
         telemetry.addData("201", "Added to hardware list:" +
                 hardwareMap.getNamesOf(leftDrive) + "  " + hardwareMap.getNamesOf(rightDrive));
