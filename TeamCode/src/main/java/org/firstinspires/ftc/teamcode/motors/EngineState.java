@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.motors;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class EngineState {
-    public int isEnginesBusy(Boolean leftEngine, Boolean rightEngine) {
+    public int isEnginesBusy(DcMotor leftEngine, DcMotor rightEngine) {
         try {
-            if (leftEngine == true && rightEngine == false) {
+            if (leftEngine.isBusy() == true && rightEngine.isBusy() == false) {
                 return 10;
-            } else if (leftEngine == false && rightEngine == true) {
+            } else if (leftEngine.isBusy() == false && rightEngine.isBusy() == true) {
                 return 01;
             } else {
                 return 11;
