@@ -33,11 +33,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Core;
+import org.firstinspires.ftc.teamcode.sensor.ColorSensor;
 
 
 /**
@@ -56,19 +58,19 @@ import org.firstinspires.ftc.teamcode.Core;
 @TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
 public class TestMotorLeftRight extends LinearOpMode {
 
-    private Core core = new Core();
+    private ColorSensor core = new ColorSensor();
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private NormalizedColorSensor colorSensor = null;
 
     public void setHardwareMap() {
         leftDrive = hardwareMap.get(DcMotor.class, "leftMotor");
         rightDrive = hardwareMap.get(DcMotor.class, "rightMotor");
-        //colorSensor = (NormalizedColorSensor)hardwareMap.get("colorSensor");
+        colorSensor = (NormalizedColorSensor)hardwareMap.get("colorSensor");
         telemetry.addData("201", "Added to hardware list:" +
-                hardwareMap.getNamesOf(leftDrive) + hardwareMap.getNamesOf(rightDrive));
+                hardwareMap.getNamesOf(leftDrive) + "  " + hardwareMap.getNamesOf(rightDrive));
         telemetry.update();
 
     }
@@ -86,7 +88,8 @@ public class TestMotorLeftRight extends LinearOpMode {
 
             telemetry.addData("200", "Inialized Code");
             telemetry.update();
-
+            telemetry.addData(core.getReading(colorSensor), "202");
+            telemetry.addData(core.sensorName(colorSensor), "202");
         }
     }
 }

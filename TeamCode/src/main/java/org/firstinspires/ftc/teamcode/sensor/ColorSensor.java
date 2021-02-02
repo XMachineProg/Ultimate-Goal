@@ -1,32 +1,45 @@
 package org.firstinspires.ftc.teamcode.sensor;
 
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.teamcode.Core;
 
-public class ColorSensor extends Core /*implements InterfaceSensor*/ {
+public class ColorSensor implements InterfaceSensor {
 
-    //private String sensorName = super.colorSensor.getDeviceName(); // Gets the name of the device being used as a sensor
-    //private NormalizedRGBA colors = colorSensor.getNormalizedColors(); // Get colors in RGB form
 
+
+
+
+
+    private Float redColor(NormalizedColorSensor sensor) {
+        return sensor.getNormalizedColors().red;
+    }
+    private Float greenColor(NormalizedColorSensor sensor) {
+        return sensor.getNormalizedColors().green;
+    }
+    private Float blueColor(NormalizedColorSensor sensor) {
+        return sensor.getNormalizedColors().blue;
+    }
 
     private String calculateColor(Float red, Float green, Float blue) {
         if (red > green && red > blue) {
             return "Red";
         } else if (green > red && green > blue) {
             return "Green";
-        }  else {
+        } else if (red == blue && red == green) {
+            return "Black";
+        }else {
             return "Blue";
         }
     }
-    /*
-    @Override
-    public String sensorName() {
-        return sensorName;
+
+    public String sensorName(NormalizedColorSensor sensor) {
+        return sensor.getDeviceName();
     }
 
     @Override
-    public String getReading() {
-        return calculateColor(colors.red, colors.green, colors.blue);
-    }*/
+    public String getReading(NormalizedColorSensor sensor) {
+        return calculateColor(redColor(sensor), greenColor(sensor), blueColor(sensor));
+    }
 }

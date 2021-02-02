@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Core extends LinearOpMode {
     //public DcMotor leftMotor = null; // This variable will be responsible for the left engine.
     //public DcMotor rightMotor = null; // This variable will be responsible for the right engine.
-    //protected NormalizedColorSensor colorSensor;
+    protected NormalizedColorSensor colorSensor;
     //private Telemetry tlmtr;
 
 
