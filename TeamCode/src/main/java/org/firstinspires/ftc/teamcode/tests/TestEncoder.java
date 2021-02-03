@@ -45,17 +45,17 @@ public class TestEncoder extends LinearOpMode {
 
             telemetry.addData(String.valueOf(leftEngine.getCurrentPosition()), " | current position");
 
-            coreMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            coreMotor.setTargetPosition(90);
+            rightEngine.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightEngine.setTargetPosition(90);
 
-            coreMotor.setPower(.5);
-            coreMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            while (coreMotor.isBusy()) {
+            rightEngine.setPower(.5);
+            rightEngine.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            while (rightEngine.isBusy()) {
                 telemetry.addData("Path", "driving");
                 telemetry.update();
             }
 
-            coreMotor.setPower(0);
+            rightEngine.setPower(0);
             telemetry.addData("Path", "complete");
             telemetry.update();
 
