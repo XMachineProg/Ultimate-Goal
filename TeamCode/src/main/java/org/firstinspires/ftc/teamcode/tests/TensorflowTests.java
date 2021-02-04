@@ -73,7 +73,7 @@ public class TensorflowTests extends LinearOpMode {
                 }
             }
             RobotState robState = RobotState.TARGET_RING;
-            sleep(2000);
+            sleep(1000);
 
         }
     }
@@ -88,25 +88,15 @@ public class TensorflowTests extends LinearOpMode {
              telemetry.addData("Tagged Ring", "202");
              telemetry.update();
              for ( Recognition recognition : updateRecognitions) {
-                 telemetry.addData("Tagged Ring", recognition.getLabel());
-                 telemetry.update();
                  if (recognition.getLabel().equals(consts.FIRST_LABEL_NAME)) {
-                     telemetry.addData("Inside", "Quad");
                      quad = recognition;
-                     telemetry.addData("Recognition: ", quad.getConfidence());
-                     //break;
                  } else if (recognition.getLabel().equals(consts.SECOND_LABEL_NAME)) {
-                     telemetry.addData("Inside", recognition.getLabel());
                      single = recognition;
-                     telemetry.addData("Recognition: ", single.getConfidence());
-                     //break;
                  }
-                 telemetry.addData("Recognition: ", quad.estimateAngleToObject(AngleUnit.DEGREES));
-                 telemetry.update();
 
                  if (quad != null) {
-                         int quadLeftX = (int) quad.getLeft();
-                         int quadRightX = (int) quad.getRight();
+                         int quadLeftX = (int) quad.getTop();
+                         int quadRightX = (int) quad.getBottom();
                          int quadCenterX = (quadLeftX + quadRightX) / 2;
                          int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
                          telemetry.addData("Offset: ", offset);
@@ -116,16 +106,17 @@ public class TensorflowTests extends LinearOpMode {
                          telemetry.update();
                  }
 
-                 while (single != null) {
-                     int singleLeftX = (int) single.getRight();
-                     int singleRightX = (int) single.getRight();
-                     int singleCenterx = (singleLeftX + singleRightX) / 2;
-                     int offset = singleCenterx - consts.SCREEN_WIDTH / 2;
+                 if (quad != null) {
+                     int singleLeftX = (int) single.getTop();
+                     int singleRightX = (int) single.getBottom();
+                     int singleCenterX = (singleLeftX + singleRightX) / 2;
+                     int offset = singleCenterX - consts.SCREEN_WIDTH / 2;
                      telemetry.addData("Offset: ", offset);
                      telemetry.update();
-                 } /*else {
+                 } else {
                      telemetry.addData("101", "No single");
-                 }*/
+                     telemetry.update();
+                 }
 
 
 
