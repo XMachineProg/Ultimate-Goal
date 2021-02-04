@@ -8,8 +8,8 @@ public class Constants {
 
     public final int SCREEN_WIDTH = 1080;
 
-    public final String FIRST_LABEL_NAME = "Quad";
-    public final String SECOND_LABEL_NAME = "Single";
+    public final String FIRST_LABEL_NAME = "quad";
+    public final String SECOND_LABEL_NAME = "single";
 
 
 }

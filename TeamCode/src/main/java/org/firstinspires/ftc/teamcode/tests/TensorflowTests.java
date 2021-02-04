@@ -71,6 +71,9 @@ public class TensorflowTests extends LinearOpMode {
                     robState = RobotState.ERROR;
                 }
             }
+            RobotState robState = RobotState.TARGET_RING;
+            sleep(2000);
+
         }
     }
 
@@ -82,6 +85,8 @@ public class TensorflowTests extends LinearOpMode {
              telemetry.addData("Tagged Ring", "202");
              telemetry.update();
              for ( Recognition recognition : updateRecognitions) {
+                 telemetry.addData("Tagged Ring", recognition.getLabel());
+                 telemetry.update();
                  if (recognition.getLabel().equals(consts.FIRST_LABEL_NAME)) {
                      quad = recognition;
                      break;
@@ -97,6 +102,9 @@ public class TensorflowTests extends LinearOpMode {
                      int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
                      telemetry.addData("Offset: ", offset);
                      telemetry.update();
+                 } else {
+                     telemetry.addData("101", "No quad");
+                     telemetry.update();
                  }
 
                  if (single != null) {
@@ -106,10 +114,16 @@ public class TensorflowTests extends LinearOpMode {
                      int offset = singleCenterx - consts.SCREEN_WIDTH / 2;
                      telemetry.addData("Offset: ", offset);
                      telemetry.update();
+                 } else {
+                     telemetry.addData("101", "No single");
+                     telemetry.update();
                  }
 
 
              }
+         } else {
+             telemetry.addData("Idle", "000");
+             telemetry.update();
          }
     }
 
