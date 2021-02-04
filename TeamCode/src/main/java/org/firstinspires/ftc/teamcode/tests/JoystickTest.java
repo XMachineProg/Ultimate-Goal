@@ -18,7 +18,6 @@ public class JoystickTest extends LinearOpMode {
     private EngineMoviment em = new EngineMoviment();
 
 
-
     public void setHardwareMap() {
         leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
         rightEngine = hardwareMap.get(DcMotor.class, "rightMotor");
@@ -26,7 +25,6 @@ public class JoystickTest extends LinearOpMode {
         telemetry.addData("201", "Added to hardware list:" +
                 hardwareMap.getNamesOf(leftEngine) + "  " + hardwareMap.getNamesOf(rightEngine));
         telemetry.update();
-
     }
 
     private double leftEnginePower = 0.0;
@@ -35,23 +33,39 @@ public class JoystickTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        rightEngine.setDirection(DcMotorSimple.Direction.REVERSE);
+
         setHardwareMap();
+        rightEngine.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
         while (opModeIsActive()) {
-            while (gamepad1.right_trigger > 0) {
-                leftEnginePower = gamepad1.right_trigger;
-                rightEnginePower = gamepad1.right_trigger;
+            while (gamepad1.left_stick_y != 0) {
+                leftEnginePower = gamepad1.left_stick_y;
+                rightEnginePower = gamepad1.left_stick_y;
+                leftEngine.setPower(leftEnginePower / 2);
+                rightEngine.setPower(rightEnginePower / 2);
+
+                while (gamepad1.left_stick_x < 0) {
+                    leftEnginePower = gamepad1.left_stick_y * gamepad1.left_stick_x;
+                    rightEnginePower = gamepad1.left_stick_y;
+                    leftEngine.setPower(leftEnginePower / 2);
+                    rightEngine.setPower(rightEnginePower / 2);
+                }
+                while (gamepad1.left_stick_x > 0) {
+                    leftEnginePower = gamepad1.left_stick_y;
+                    rightEnginePower = gamepad1.left_stick_y * gamepad1.left_stick_x;
+                    leftEngine.setPower(leftEnginePower / 2);
+                    rightEngine.setPower(rightEnginePower / 2);
+                }
+
+            }
+            while (gamepad1.left_stick_y == 0) {
+                leftEnginePower = gamepad1.left_stick_y;
+                rightEnginePower = gamepad1.left_stick_y;
                 leftEngine.setPower(leftEnginePower);
                 rightEngine.setPower(rightEnginePower);
             }
-            while (gamepad1.right_trigger == 0) {
-                leftEnginePower = gamepad1.right_trigger;
-                rightEnginePower = gamepad1.right_trigger;
-                leftEngine.setPower(leftEnginePower);
-                rightEngine.setPower(rightEnginePower);
-            }
+
         }
     }
 }
