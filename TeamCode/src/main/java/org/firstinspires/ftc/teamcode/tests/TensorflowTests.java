@@ -42,7 +42,95 @@ public class TensorflowTests extends LinearOpMode {
                 ClassFactory.getInstance().createTFObjectDetector(tfodParameters, myVuforia)
         ;
 
-        myTfod.loadModelFromAsset("Skystone.tflite", "Stone", "Skystone");
+        myTfod.loadModelFromAsset("UsualThings.tflite", "person",
+                "bicycle",
+                "car",
+                "motorcycle",
+                "airplane",
+                "bus",
+                "train",
+                "truck",
+                "boat",
+                "traffic light",
+                "fire hydrant",
+                "?",
+                "stop sign",
+                "parking meter",
+                "bench",
+                "bird",
+                "cat",
+                "dog",
+                "horse",
+                "sheep",
+                "cow",
+                "elephant",
+                "bear",
+                "zebra",
+                "giraffe",
+                "??",
+                "backpack",
+                "umbrella",
+                "???",
+                "handbag",
+                "tie",
+                "suitcase",
+                "frishbee",
+                "skis",
+                "snowboard",
+                "sport balls",
+                "kite",
+                "baseball bat",
+                "baseball glove",
+                "skateboard",
+                "tennis racket",
+                "bottle",
+                "????",
+                "wine glass",
+                "cup",
+                "fork",
+                "knife",
+                "spoon",
+                "bowl",
+                "banana",
+                "apple",
+                "sandwich",
+                "orange",
+                "broccoli",
+                "carrot",
+                "hotdog",
+                "pizza",
+                "donut",
+                "cake",
+                "chair",
+                "couch",
+                "potted plant",
+                "bed",
+                "?????",
+                "dinning table",
+                "??????",
+                "???????",
+                "toilet",
+                "????????",
+                "tv",
+                "laptop",
+                "mouse",
+                "remote",
+                "keyboard",
+                "cell phone",
+                "microwave",
+                "oven",
+                "toaster",
+                "sink",
+                "refrigerator",
+                "?????????",
+                "book",
+                "clock",
+                "vase",
+                "scissors",
+                "teddy bear",
+                "hair drief",
+                "toothbrush"
+        );
 
         myTfod.activate();
 
@@ -55,11 +143,6 @@ public class TensorflowTests extends LinearOpMode {
                 telemetry.addData(" > ", recognition.getLabel());
             }
             telemetry.update();
-
-            sleep(10000);
-
-
-            break;
         }
     }
 }
