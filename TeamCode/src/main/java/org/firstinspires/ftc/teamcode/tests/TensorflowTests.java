@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -79,7 +80,9 @@ public class TensorflowTests extends LinearOpMode {
 
     private void targetRing() {
          Recognition quad = null;
+
          Recognition single = null;
+
          List<Recognition> updateRecognitions = myTfod.getUpdatedRecognitions();
          if (updateRecognitions != null) {
              telemetry.addData("Tagged Ring", "202");
@@ -88,36 +91,42 @@ public class TensorflowTests extends LinearOpMode {
                  telemetry.addData("Tagged Ring", recognition.getLabel());
                  telemetry.update();
                  if (recognition.getLabel().equals(consts.FIRST_LABEL_NAME)) {
+                     telemetry.addData("Inside", "Quad");
                      quad = recognition;
-                     break;
+                     telemetry.addData("Recognition: ", quad.getConfidence());
+                     //break;
                  } else if (recognition.getLabel().equals(consts.SECOND_LABEL_NAME)) {
+                     telemetry.addData("Inside", recognition.getLabel());
                      single = recognition;
-                     break;
+                     telemetry.addData("Recognition: ", single.getConfidence());
+                     //break;
                  }
+                 telemetry.addData("Recognition: ", quad.estimateAngleToObject(AngleUnit.DEGREES));
+                 telemetry.update();
 
                  if (quad != null) {
-                     int quadLeftX = (int) quad.getLeft();
-                     int quadRightX = (int) quad.getRight();
-                     int quadCenterX = (quadLeftX + quadRightX) / 2;
-                     int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
-                     telemetry.addData("Offset: ", offset);
-                     telemetry.update();
-                 } else {
-                     telemetry.addData("101", "No quad");
-                     telemetry.update();
+                         int quadLeftX = (int) quad.getLeft();
+                         int quadRightX = (int) quad.getRight();
+                         int quadCenterX = (quadLeftX + quadRightX) / 2;
+                         int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
+                         telemetry.addData("Offset: ", offset);
+                         telemetry.update();
+                     } else {
+                         telemetry.addData("101", "No quad");
+                         telemetry.update();
                  }
 
-                 if (single != null) {
+                 while (single != null) {
                      int singleLeftX = (int) single.getRight();
                      int singleRightX = (int) single.getRight();
                      int singleCenterx = (singleLeftX + singleRightX) / 2;
                      int offset = singleCenterx - consts.SCREEN_WIDTH / 2;
                      telemetry.addData("Offset: ", offset);
                      telemetry.update();
-                 } else {
+                 } /*else {
                      telemetry.addData("101", "No single");
-                     telemetry.update();
-                 }
+                 }*/
+
 
 
              }
