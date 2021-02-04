@@ -102,11 +102,9 @@ public class TensorflowTests extends LinearOpMode {
                          telemetry.addData("Offset: ", offset);
                          telemetry.update();
                      } else {
-                         telemetry.addData("101", "No quad");
-                         telemetry.update();
                  }
 
-                 if (quad != null) {
+                 if (single != null) {
                      int singleLeftX = (int) single.getTop();
                      int singleRightX = (int) single.getBottom();
                      int singleCenterX = (singleLeftX + singleRightX) / 2;
@@ -114,8 +112,6 @@ public class TensorflowTests extends LinearOpMode {
                      telemetry.addData("Offset: ", offset);
                      telemetry.update();
                  } else {
-                     telemetry.addData("101", "No single");
-                     telemetry.update();
                  }
 
 
