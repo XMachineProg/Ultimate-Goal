@@ -52,10 +52,43 @@ public class TensorflowTests extends LinearOpMode {
 
             List<Recognition> updatedRecognitions = myTfod.getUpdatedRecognitions();
 
-            for (Recognition recognition : updatedRecognitions) {
-                telemetry.addData(" > ", recognition.getLabel());
+            if (updatedRecognitions != null) {
+
+                telemetry.addData("if", 1);
+                telemetry.update();
+
+                for (Recognition recognition : updatedRecognitions) {
+                    telemetry.addData("for", 1);
+                    telemetry.update();
+
+                    if (recognition.getLabel() == "Quad") {
+                        int quadLeftX = (int) recognition.getLeft();
+                        int quadRightX = (int) recognition.getRight();
+                        int quadCenterX = ( quadLeftX + quadRightX ) / 2;
+                        int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
+                        telemetry.addData("102", "Quad location: " + offset);
+                        telemetry.update();
+                        break;
+                    } else {
+                        int singleLeftX = (int) recognition.getLeft();
+                        int singleRightX = (int) recognition.getRight();
+                        int singleCenterX = (int) (singleLeftX + singleRightX) / 2;
+                        int offset = singleCenterX - consts.SCREEN_WIDTH /2;
+                        telemetry.addData("102", "Single location " + offset);
+                        telemetry.update();
+                        break;
+                    }
+                }
+
+            }  else {
+                telemetry.addData ("404", "Nothing was recognized");
+                telemetry.update();
             }
+
+
             telemetry.update();
+
+            //sleep(1000);
         }
     }
 }
