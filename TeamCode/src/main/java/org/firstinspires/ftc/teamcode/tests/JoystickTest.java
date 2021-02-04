@@ -84,6 +84,16 @@ public class JoystickTest extends LinearOpMode {
 
             while (gamepad1.left_stick_x != 0) {
                 leftEnginePower = (gamepad1.left_stick_x) / 2;
+                rightEnginePower = (-gamepad1.left_stick_x) / 2;
+                leftEngine.setPower(leftEnginePower);
+                rightEngine.setPower(rightEnginePower);
+                while (gamepad1.right_trigger != 0) {
+                    acelleration(leftEnginePower, rightEnginePower);
+                }
+
+            }
+            while (gamepad1.left_stick_x < 0) {
+                leftEnginePower = (-gamepad1.left_stick_x) / 2;
                 rightEnginePower = (gamepad1.left_stick_x) / 2;
                 leftEngine.setPower(leftEnginePower);
                 rightEngine.setPower(rightEnginePower);
