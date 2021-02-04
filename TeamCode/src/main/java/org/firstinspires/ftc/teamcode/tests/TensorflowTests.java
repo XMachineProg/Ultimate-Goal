@@ -43,7 +43,7 @@ public class TensorflowTests extends LinearOpMode {
                 ClassFactory.getInstance().createTFObjectDetector(tfodParameters, myVuforia)
         ;
 
-        myTfod.loadModelFromAsset("Skystone.tflite", "Stone", "Skystone");
+        myTfod.loadModelFromAsset("UltimateGoal.tflite", "Quad", "Single");
 
         myTfod.activate();
 
