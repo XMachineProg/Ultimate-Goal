@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -10,85 +12,142 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.internal.android.dx.rop.cst.Constant;
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.motors.EngineMoviment;
 
 import java.util.List;
 
 @Autonomous(name = "Detect Objects", group = "Concept")
 public class TensorflowTests extends LinearOpMode {
 
+
+
+    enum RobotState
+    {
+        TARGET_RING,
+        MOVE_RING,
+        DONE,
+        TEST,
+        ERROR,
+    }
+    TFObjectDetector.Parameters tfodParameters = null;
+    private int tfodMonitorViewId;
+    private VuforiaLocalizer myVuforia = null;
+    private VuforiaLocalizer.Parameters parameters = null;
+    private TFObjectDetector myTfod = null;
     private Constants consts = new Constants();
+    private EngineMoviment em = new EngineMoviment();
+    private RobotState robState = RobotState.TARGET_RING;
+    private DcMotor leftEngine = null;
+    private DcMotor rightEngine = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        setHardwareMap();
+        initVuforia();
+        initTfod();
+        waitForStart();
+
+        while (opModeIsActive()) {
+            switch (robState) {
+                case TARGET_RING:
+                    targetRing();
+                    break;
+                case MOVE_RING:
+                    //moveRing();
+                    break;
+                case DONE:
+                    //shutdown();
+                    break;
+                case ERROR:
+                    robState = RobotState.DONE;
+                    break;
+                case TEST:
+                    em.straightAhead(leftEngine, rightEngine, 2000);
+                    break;
+                default: {
+                    telemetry.addData("Error", 500);
+                    telemetry.update();
+                    robState = RobotState.ERROR;
+                }
+            }
+        }
+    }
+
+    private void targetRing() {
+         Recognition quad = null;
+         Recognition single = null;
+         List<Recognition> updateRecognitions = myTfod.getUpdatedRecognitions();
+         if (updateRecognitions != null) {
+             telemetry.addData("Tagged Ring", "202");
+             telemetry.update();
+             for ( Recognition recognition : updateRecognitions) {
+                 if (recognition.getLabel().equals(consts.FIRST_LABEL_NAME)) {
+                     quad = recognition;
+                     break;
+                 } else if (recognition.getLabel().equals(consts.SECOND_LABEL_NAME)) {
+                     single = recognition;
+                     break;
+                 }
+
+                 if (quad != null) {
+                     int quadLeftX = (int) quad.getLeft();
+                     int quadRightX = (int) quad.getRight();
+                     int quadCenterX = (quadLeftX + quadRightX) / 2;
+                     int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
+                     telemetry.addData("Offset: ", offset);
+                     telemetry.update();
+                 }
+
+                 if (single != null) {
+                     int singleLeftX = (int) single.getRight();
+                     int singleRightX = (int) single.getRight();
+                     int singleCenterx = (singleLeftX + singleRightX) / 2;
+                     int offset = singleCenterx - consts.SCREEN_WIDTH / 2;
+                     telemetry.addData("Offset: ", offset);
+                     telemetry.update();
+                 }
+
+
+             }
+         }
+    }
+
+    private void initVuforia() {
+        parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = consts.VULFORIA_KEY;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
-        VuforiaLocalizer myVuforia = ClassFactory.getInstance().createVuforia(parameters);
+        myVuforia = ClassFactory.getInstance().createVuforia(parameters);
+    }
 
-        int tfodMonitorViewId =
+    private void initTfod() {
+         tfodMonitorViewId =
                 hardwareMap.appContext.getResources().getIdentifier (
                         "tfodMonitorViewId",
                         "id",
                         hardwareMap.appContext.getPackageName()
                 )
-        ;
+                ;
 
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.8f;
-
-        TFObjectDetector myTfod =
+        tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.8f;
+        myTfod =
                 ClassFactory.getInstance().createTFObjectDetector(tfodParameters, myVuforia)
         ;
 
         myTfod.loadModelFromAsset("UltimateGoal.tflite", "Quad", "Single");
 
         myTfod.activate();
+    }
 
-        waitForStart();
-        while (opModeIsActive()) {
+    public void setHardwareMap() {
+        leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
+        rightEngine = hardwareMap.get(DcMotor.class, "rightMotor");
+        telemetry.addData("201", "Added to hardware list:" +
+                hardwareMap.getNamesOf(leftEngine) + "  " + hardwareMap.getNamesOf(rightEngine));
+        telemetry.update();
 
-            List<Recognition> updatedRecognitions = myTfod.getUpdatedRecognitions();
-
-            if (updatedRecognitions != null) {
-
-                telemetry.addData("if", 1);
-                telemetry.update();
-
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData("for", 1);
-                    telemetry.update();
-
-                    if (recognition.getLabel() == "Quad") {
-                        int quadLeftX = (int) recognition.getLeft();
-                        int quadRightX = (int) recognition.getRight();
-                        int quadCenterX = ( quadLeftX + quadRightX ) / 2;
-                        int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
-                        telemetry.addData("102", "Quad location: " + offset);
-                        telemetry.update();
-                        break;
-                    } else {
-                        int singleLeftX = (int) recognition.getLeft();
-                        int singleRightX = (int) recognition.getRight();
-                        int singleCenterX = (int) (singleLeftX + singleRightX) / 2;
-                        int offset = singleCenterX - consts.SCREEN_WIDTH /2;
-                        telemetry.addData("102", "Single location " + offset);
-                        telemetry.update();
-                        break;
-                    }
-                }
-
-            }  else {
-                telemetry.addData ("404", "Nothing was recognized");
-                telemetry.update();
-            }
-
-
-            telemetry.update();
-
-            //sleep(1000);
-        }
     }
 }
