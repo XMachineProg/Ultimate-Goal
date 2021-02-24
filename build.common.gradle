@@ -21,6 +21,8 @@ apply plugin: 'com.android.application'
 
 android {
 
+    android.ndkVersion  "22.0.7026061"
+
     compileSdkVersion 28
 
     signingConfigs {
@@ -92,8 +94,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     sourceSets.main {

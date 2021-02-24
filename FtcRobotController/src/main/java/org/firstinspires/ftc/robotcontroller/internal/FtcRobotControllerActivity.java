@@ -382,7 +382,7 @@ public class FtcRobotControllerActivity extends Activity
 
     FtcAboutActivity.setBuildTimeFromBuildConfig(BuildConfig.BUILD_TIME);
 
-    FtcDashboard.start();
+
   }
 
   protected UpdateUI createUpdateUI() {
@@ -414,6 +414,7 @@ public class FtcRobotControllerActivity extends Activity
 
     // check to see if there is a preferred Wi-Fi to use.
     checkPreferredChannel();
+    FtcDashboard.start();
 
     entireScreenLayout.setOnTouchListener(new View.OnTouchListener() {
       @Override
@@ -698,7 +699,6 @@ public class FtcRobotControllerActivity extends Activity
           }
         : null);
     }
-    FtcDashboard.attachEventLoop(eventLoop);
   }
 
   private void requestRobotSetup(@Nullable Runnable runOnComplete) {
@@ -723,6 +723,7 @@ public class FtcRobotControllerActivity extends Activity
 
     passReceivedUsbAttachmentsToEventLoop();
     AndroidBoard.showErrorIfUnknownControlHub();
+    FtcDashboard.attachEventLoop(eventLoop);
   }
 
   protected OpModeRegister createOpModeRegister() {
