@@ -10,9 +10,9 @@ public class Constants {
 
     public final String FIRST_LABEL_NAME = "Quad";
     public final String SECOND_LABEL_NAME = "Single";
-    public final Integer HD_401_TICKS = 1120;
-    public final int GEARBOX_ONE = 1/2;
-    public final Double OMNIWHEELS_DIAMETER = 3.54331;
-    public final Double PI = 3.14159265;
+    public final Double HD_401_TICKS = 1120.00;
+    public final Double GEARBOX_ONE = 0.50;
+    public final Double OMNIWHEELS_DIAMETER = 3.54;
+    public final Double PI = 3.14;
 
 }
