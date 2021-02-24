@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tests;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +9,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -30,6 +33,8 @@ public class TensorflowTests extends LinearOpMode {
         TEST,
         ERROR,
     }
+    private FtcDashboard dashboard = FtcDashboard.getInstance();
+    private Telemetry dashboardTelemetry = dashboard.getTelemetry();
     TFObjectDetector.Parameters tfodParameters = null;
     private int tfodMonitorViewId;
     private VuforiaLocalizer myVuforia = null;
@@ -43,7 +48,7 @@ public class TensorflowTests extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         setHardwareMap();
         initVuforia();
         initTfod();
@@ -130,6 +135,8 @@ public class TensorflowTests extends LinearOpMode {
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         myVuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        dashboard.startCameraStream(myVuforia, 60);
     }
 
     private void initTfod() {

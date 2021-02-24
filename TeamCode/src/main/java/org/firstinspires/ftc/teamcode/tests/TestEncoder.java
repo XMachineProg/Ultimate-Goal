@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tests;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.motors.EngineMoviment;
 import org.firstinspires.ftc.teamcode.sensor.ColorSensor;
@@ -14,6 +17,10 @@ import org.firstinspires.ftc.teamcode.sensor.ColorSensor;
 
 @TeleOp(name="Encoder Test", group="Linear Opmode")
 public class TestEncoder extends LinearOpMode {
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
     private Constants cons = new Constants();
 
     private ColorSensor core = new ColorSensor();
@@ -40,7 +47,7 @@ public class TestEncoder extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         setHardwareMap(); // Return to setHardwareMap method
         telemetry.addData("CPI puro ", CPI);
         leftEngine.setDirection(DcMotorSimple.Direction.REVERSE);
