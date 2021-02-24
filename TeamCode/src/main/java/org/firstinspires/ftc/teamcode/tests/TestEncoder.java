@@ -4,14 +4,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.motors.EngineMoviment;
 import org.firstinspires.ftc.teamcode.sensor.ColorSensor;
 
 
 @TeleOp(name="Encoder Test", group="Linear Opmode")
 public class TestEncoder extends LinearOpMode {
+    private Constants cons = new Constants();
+
     private ColorSensor core = new ColorSensor();
 
 
@@ -20,6 +24,8 @@ public class TestEncoder extends LinearOpMode {
     private DcMotor coreMotor = null;
     private NormalizedColorSensor colorSensor = null;
     private EngineMoviment em = new EngineMoviment();
+    private Double CPI = cons.HD_401_TICKS * (cons.GEARBOX_ONE) / (cons.PI*cons.OMNIWHEELS_DIAMETER); // 11,1316366526715 expected value
+
 
     public void setHardwareMap() {
         leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
@@ -35,27 +41,37 @@ public class TestEncoder extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        setHardwareMap(); // Return to setHardwareMap methodleftEngine.setDirection(DcMotor.Direction.REVERSE);waitForStart();
-
+        setHardwareMap(); // Return to setHardwareMap method
+        telemetry.addData("CPI puro ", CPI);
+        leftEngine.setDirection(DcMotorSimple.Direction.REVERSE);
+        telemetry.update();
         waitForStart();
 
         while (opModeIsActive()) {
 
+
+
             telemetry.addData("200", "Inialized Code");telemetry.update();
 
-            telemetry.addData(String.valueOf(leftEngine.getCurrentPosition()), " | current position");
 
             rightEngine.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightEngine.setTargetPosition(90);
+            leftEngine.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            telemetry.addData("Encoder Position: ", rightEngine.getCurrentPosition() + "left: " + leftEngine.getCurrentPosition());
+            rightEngine.setTargetPosition((int) (CPI * 39));
+            leftEngine.setTargetPosition((int) (CPI * 39));
 
             rightEngine.setPower(.5);
+            leftEngine.setPower(.5);
             rightEngine.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            while (rightEngine.isBusy()) {
+            leftEngine.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            while (rightEngine.isBusy() || leftEngine.isBusy()) {
                 telemetry.addData("Path", "driving");
+                telemetry.addData("Encoder position: ", rightEngine.getCurrentPosition() + " " + leftEngine.getCurrentPosition());
                 telemetry.update();
             }
 
             rightEngine.setPower(0);
+            leftEngine.setPower(0);
             telemetry.addData("Path", "complete");
             telemetry.update();
 
