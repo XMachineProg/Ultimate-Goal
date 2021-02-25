@@ -28,7 +28,7 @@ public class SecondJoystickTest extends OpMode {
     private void setHardwareMap(DcMotor lm, DcMotor rm) {
         lm = hardwareMap.get(DcMotor.class, "leftMotor");
         rm = hardwareMap.get(DcMotor.class, "rightMotor");
-        tlmtr.addData("HardwareMap; ", lm.getDeviceName() + " and " + rm.getDeviceName() + " added to hwmap list!");
+        tlmtr.addData("HardwareMap ", lm.getDeviceName() + " and " + rm.getDeviceName() + " added to hwmap list!");
         tlmtr.update();
     }
 }
