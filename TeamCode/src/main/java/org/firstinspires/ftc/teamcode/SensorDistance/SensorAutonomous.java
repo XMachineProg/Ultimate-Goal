@@ -13,9 +13,12 @@ public class SensorAutonomous extends RangeSensor implements InterfaceRange{
 
     public void distance(){
 
-        if(sensor.getDistance(DistanceUnit.CM) > 0)
-        telemetry.addData("Distance:", sensor.getDistance(DistanceUnit.CM)); // This variable is responsible of calculating distance
-        telemetry.update();
+        if(sensor.getDistance(DistanceUnit.CM) >= 0) {
+            telemetry.addData("Distance:", sensor.getDistance(DistanceUnit.CM)); // This variable is responsible of calculating distance
+            telemetry.update();
+        } else {
+            telemetry.addData("Error: ", sensor.getConnectionInfo());
+        }
 
     }
     public String sensorName(){
