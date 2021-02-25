@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.acmerobotics.dashboard.config.Config;
 
 public class Constants {
 
