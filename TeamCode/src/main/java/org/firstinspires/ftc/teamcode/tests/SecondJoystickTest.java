@@ -18,40 +18,41 @@ public class SecondJoystickTest extends OpMode {
 
     private DcMotor leftMotor;
     private DcMotor rightMotor;
-    private double leftPower;
-    private double rightPower;
-    private double max;
-    private double turn;
-    private double drive;
+    private double leftPower; // Power of left motor
+    private double rightPower; // Power of right Motor
+    private double max; // variable of the maximum and absolute value between two forces
+    private double turn; // Left and right power of gamepad
+    private double drive; // Front and back power of gamepad
 
     @Override
     public void init() {
 
         setHardwareMap(leftMotor, rightMotor); // Add motors to hwmap list
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE); // reverse the directions of the left motor
     }
 
     @Override
     public void loop() {
-        drive = -gamepad1.left_stick_y;
-        turn = gamepad1.left_stick_x;
-        leftPower = drive + turn;
-        rightPower = drive - turn;
 
-        max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
-        if (max > 1) {
+        drive = -gamepad1.left_stick_y; // Keep negative, otherwise the robot goes backwards
+        turn = gamepad1.left_stick_x;
+        leftPower = drive + turn; // Gets the left motor power along with the rotation
+        rightPower = drive - turn; // Gets the right motor power along with the rotation
+
+        max = Math.max(Math.abs(leftPower), Math.abs(rightPower)); // maximum and absolute value between two forces
+        if (max > 1) { // If the power is greater than 1, it will be "normalized"
             leftPower /= max;
             rightPower /= max;
         }
-        if (gamepad1.right_trigger == 0.0) {
+        if (gamepad1.right_trigger == 0.0) { // If the right trigger is not pressed, the power will be reduced by half.
             leftPower /= 2.0;
             rightPower /= 2.0;
         }
         tlmtr.addData("Left power", leftPower);
         tlmtr.addData("Right power", rightPower);
         tlmtr.update();
-        leftMotor.setPower(leftPower);
-        rightMotor.setPower(rightPower);
+        leftMotor.setPower(leftPower); // Set the power to the motor
+        rightMotor.setPower(rightPower); // Set the power to the motor
     }
 
 
