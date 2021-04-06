@@ -50,6 +50,8 @@ public class SecondJoystickTest extends OpMode {
         }
         tlmtr.addData("Left power", leftPower);
         tlmtr.addData("Right power", rightPower);
+        tlmtr.addData("Left ticks", leftMotor.getCurrentPosition());
+        tlmtr.addData("Rigt ticks", rightMotor.getCurrentPosition());
         tlmtr.update();
         leftMotor.setPower(leftPower); // Set the power to the motor
         rightMotor.setPower(rightPower); // Set the power to the motor
