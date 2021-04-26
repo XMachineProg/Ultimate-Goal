@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.internal.android.dx.rop.cst.Constant;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.motors.EngineMoviment;
+import org.firstinspires.ftc.teamcode.vision.Initializers;
 
 import java.util.List;
 
@@ -33,12 +34,13 @@ public class TensorflowTests extends LinearOpMode {
         TEST,
         ERROR,
     }
+    Initializers visionInit = new Initializers();
     private FtcDashboard dashboard = FtcDashboard.getInstance();
     private Telemetry dashboardTelemetry = dashboard.getTelemetry();
     TFObjectDetector.Parameters tfodParameters = null;
     private int tfodMonitorViewId;
     private VuforiaLocalizer myVuforia = null;
-    private VuforiaLocalizer.Parameters parameters = null;
+    private VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
     private TFObjectDetector myTfod = null;
     private Constants consts = new Constants();
     //private EngineMoviment em = new EngineMoviment();
@@ -49,11 +51,9 @@ public class TensorflowTests extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        //setHardwareMap();
-        initVuforia();
-        initTfod();
+        visionInit.initVuforia(myVuforia, parameters);
+        visionInit.initTfod(myTfod, tfodMonitorViewId, hardwareMap, tfodParameters);
         waitForStart();
-
         while (opModeIsActive()) {
             switch (robState) {
                 case TARGET_RING:
@@ -82,13 +82,12 @@ public class TensorflowTests extends LinearOpMode {
 
         }
     }
-
     private void targetRing() {
          Recognition quad = null;
 
          Recognition single = null;
 
-         List<Recognition> updateRecognitions = myTfod.getUpdatedRecognitions();
+         List<Recognition> updateRecognitions = visionInit.updatedRecognitions();
          if (updateRecognitions != null) {
              telemetry.addData("Tagged Ring", "202");
              telemetry.update();
@@ -127,44 +126,4 @@ public class TensorflowTests extends LinearOpMode {
              telemetry.update();
          }
     }
-
-    private void initVuforia() {
-        parameters = new VuforiaLocalizer.Parameters();
-
-        parameters.vuforiaLicenseKey = consts.VULFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
-        myVuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        dashboard.startCameraStream(myVuforia, 60);
-    }
-
-    private void initTfod() {
-         tfodMonitorViewId =
-                hardwareMap.appContext.getResources().getIdentifier (
-                        "tfodMonitorViewId",
-                        "id",
-                        hardwareMap.appContext.getPackageName()
-                )
-                ;
-
-        tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.8f;
-        myTfod =
-                ClassFactory.getInstance().createTFObjectDetector(tfodParameters, myVuforia)
-        ;
-
-        myTfod.loadModelFromAsset("UltimateGoal.tflite", "Quad", "Single");
-
-        myTfod.activate();
-    }
-
-    /*public void setHardwareMap() {
-        leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightEngine = hardwareMap.get(DcMotor.class, "rightMotor");
-        telemetry.addData("201", "Added to hardware list:" +
-                hardwareMap.getNamesOf(leftEngine) + "  " + hardwareMap.getNamesOf(rightEngine));
-        telemetry.update();
-
-    }*/
 }
