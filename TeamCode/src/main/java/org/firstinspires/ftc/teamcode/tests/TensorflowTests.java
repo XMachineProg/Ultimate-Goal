@@ -41,15 +41,15 @@ public class TensorflowTests extends LinearOpMode {
     private VuforiaLocalizer.Parameters parameters = null;
     private TFObjectDetector myTfod = null;
     private Constants consts = new Constants();
-    private EngineMoviment em = new EngineMoviment();
+    //private EngineMoviment em = new EngineMoviment();
     private RobotState robState = RobotState.TARGET_RING;
-    private DcMotor leftEngine = null;
-    private DcMotor rightEngine = null;
+    //private DcMotor leftEngine = null;
+    //private DcMotor rightEngine = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        setHardwareMap();
+        //setHardwareMap();
         initVuforia();
         initTfod();
         waitForStart();
@@ -69,7 +69,7 @@ public class TensorflowTests extends LinearOpMode {
                     robState = RobotState.DONE;
                     break;
                 case TEST:
-                    em.straightAhead(leftEngine, rightEngine, 2000);
+                    //em.straightAhead(leftEngine, rightEngine, 2000);
                     break;
                 default: {
                     telemetry.addData("Error", 500);
@@ -159,12 +159,12 @@ public class TensorflowTests extends LinearOpMode {
         myTfod.activate();
     }
 
-    public void setHardwareMap() {
+    /*public void setHardwareMap() {
         leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
         rightEngine = hardwareMap.get(DcMotor.class, "rightMotor");
         telemetry.addData("201", "Added to hardware list:" +
                 hardwareMap.getNamesOf(leftEngine) + "  " + hardwareMap.getNamesOf(rightEngine));
         telemetry.update();
 
-    }
+    }*/
 }
