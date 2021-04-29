@@ -92,35 +92,13 @@ public class TensorflowTests extends LinearOpMode {
          if (updateRecognitions != null) {
              telemetry.addData("Tagged Ring", "202");
              telemetry.update();
+             int i = 0;
              for ( Recognition recognition : updateRecognitions) {
-                 if (recognition.getLabel().equals(consts.FIRST_LABEL_NAME)) {
-                     quad = recognition;
-                 } else if (recognition.getLabel().equals(consts.SECOND_LABEL_NAME)) {
-                     single = recognition;
-                 }
-
-                 if (quad != null) {
-                         int quadLeftX = (int) quad.getTop();
-                         int quadRightX = (int) quad.getBottom();
-                         int quadCenterX = (quadLeftX + quadRightX) / 2;
-                         int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
-                         telemetry.addData("Offset: ", offset);
-                         telemetry.update();
-                     } else {
-                 }
-
-                 if (single != null) {
-                     int singleLeftX = (int) single.getTop();
-                     int singleRightX = (int) single.getBottom();
-                     int singleCenterX = (singleLeftX + singleRightX) / 2;
-                     int offset = singleCenterX - consts.SCREEN_WIDTH / 2;
-                     telemetry.addData("Offset: ", offset);
-                     telemetry.update();
-                 } else {
-                 }
-
-
-
+                 telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                 telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                         recognition.getLeft(), recognition.getTop());
+                 telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                         recognition.getRight(), recognition.getBottom());
              }
          } else {
              telemetry.addData("Idle", "000");
