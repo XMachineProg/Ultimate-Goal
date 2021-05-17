@@ -4,19 +4,13 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.robotcore.internal.android.dx.rop.cst.Constant;
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.motors.EngineMoviment;
 
 import java.util.List;
 
@@ -24,32 +18,21 @@ import java.util.List;
 public class TensorflowTests extends LinearOpMode {
 
 
-
-    enum RobotState
-    {
-        TARGET_RING,
-        MOVE_RING,
-        DONE,
-        TEST,
-        ERROR,
-    }
+    TFObjectDetector.Parameters tfodParameters = null;
     private FtcDashboard dashboard = FtcDashboard.getInstance();
     private Telemetry dashboardTelemetry = dashboard.getTelemetry();
-    TFObjectDetector.Parameters tfodParameters = null;
     private int tfodMonitorViewId;
     private VuforiaLocalizer myVuforia = null;
     private VuforiaLocalizer.Parameters parameters = null;
     private TFObjectDetector myTfod = null;
     private Constants consts = new Constants();
-    private EngineMoviment em = new EngineMoviment();
+    //private EngineMoviment em = new EngineMoviment();
     private RobotState robState = RobotState.TARGET_RING;
-    private DcMotor leftEngine = null;
-    private DcMotor rightEngine = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        setHardwareMap();
+        //setHardwareMap();
         initVuforia();
         initTfod();
         waitForStart();
@@ -69,7 +52,7 @@ public class TensorflowTests extends LinearOpMode {
                     robState = RobotState.DONE;
                     break;
                 case TEST:
-                    em.straightAhead(leftEngine, rightEngine, 2000);
+                    //em.straightAhead(leftEngine, rightEngine, 2000);
                     break;
                 default: {
                     telemetry.addData("Error", 500);
@@ -82,50 +65,28 @@ public class TensorflowTests extends LinearOpMode {
 
         }
     }
+    //private DcMotor leftEngine = null;
+    //private DcMotor rightEngine = null;
 
     private void targetRing() {
-         Recognition quad = null;
+        Recognition quad = null;
 
-         Recognition single = null;
+        Recognition single = null;
 
-         List<Recognition> updateRecognitions = myTfod.getUpdatedRecognitions();
-         if (updateRecognitions != null) {
-             telemetry.addData("Tagged Ring", "202");
-             telemetry.update();
-             for ( Recognition recognition : updateRecognitions) {
-                 if (recognition.getLabel().equals(consts.FIRST_LABEL_NAME)) {
-                     quad = recognition;
-                 } else if (recognition.getLabel().equals(consts.SECOND_LABEL_NAME)) {
-                     single = recognition;
-                 }
-
-                 if (quad != null) {
-                         int quadLeftX = (int) quad.getTop();
-                         int quadRightX = (int) quad.getBottom();
-                         int quadCenterX = (quadLeftX + quadRightX) / 2;
-                         int offset = quadCenterX - consts.SCREEN_WIDTH / 2;
-                         telemetry.addData("Offset: ", offset);
-                         telemetry.update();
-                     } else {
-                 }
-
-                 if (single != null) {
-                     int singleLeftX = (int) single.getTop();
-                     int singleRightX = (int) single.getBottom();
-                     int singleCenterX = (singleLeftX + singleRightX) / 2;
-                     int offset = singleCenterX - consts.SCREEN_WIDTH / 2;
-                     telemetry.addData("Offset: ", offset);
-                     telemetry.update();
-                 } else {
-                 }
-
-
-
-             }
-         } else {
-             telemetry.addData("Idle", "000");
-             telemetry.update();
-         }
+        List<Recognition> updateRecognitions = myTfod.getUpdatedRecognitions();
+        if (updateRecognitions != null) {
+            int i = 0;
+            for (Recognition recognition : updateRecognitions) {
+                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                        recognition.getLeft(), recognition.getTop());
+                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                        recognition.getRight(), recognition.getBottom());
+            }
+        } else {
+            telemetry.addData("Idle", "000");
+            telemetry.update();
+        }
     }
 
     private void initVuforia() {
@@ -140,13 +101,13 @@ public class TensorflowTests extends LinearOpMode {
     }
 
     private void initTfod() {
-         tfodMonitorViewId =
-                hardwareMap.appContext.getResources().getIdentifier (
+        tfodMonitorViewId =
+                hardwareMap.appContext.getResources().getIdentifier(
                         "tfodMonitorViewId",
                         "id",
                         hardwareMap.appContext.getPackageName()
                 )
-                ;
+        ;
 
         tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
@@ -159,12 +120,20 @@ public class TensorflowTests extends LinearOpMode {
         myTfod.activate();
     }
 
-    public void setHardwareMap() {
+    enum RobotState {
+        TARGET_RING,
+        MOVE_RING,
+        DONE,
+        TEST,
+        ERROR,
+    }
+
+    /*public void setHardwareMap() {
         leftEngine = hardwareMap.get(DcMotor.class, "leftMotor");
         rightEngine = hardwareMap.get(DcMotor.class, "rightMotor");
         telemetry.addData("201", "Added to hardware list:" +
                 hardwareMap.getNamesOf(leftEngine) + "  " + hardwareMap.getNamesOf(rightEngine));
         telemetry.update();
 
-    }
+    }*/
 }
