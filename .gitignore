@@ -85,3 +85,10 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+<<<<<<< Updated upstream
+=======
+.idea/codeStyles/Project.xml
+.idea/compiler.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+>>>>>>> Stashed changes
