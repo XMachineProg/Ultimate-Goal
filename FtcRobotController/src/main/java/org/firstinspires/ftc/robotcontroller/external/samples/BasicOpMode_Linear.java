@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.util.Range;
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
  *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Use Androaa Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
@@ -68,11 +68,11 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive = hardwareMap.get(DcMotor.class,"left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class,"right_drive");
+        leftDrive = hardwareMap(DcMotor.class,"left_drive");
+        rightDrive = hardwareMap(DcMotor.class,"right_Drive");
         mlb = hardwareMap.get(DcMotor.class,"mlb");
-        mrb  = hardwareMap.get(DcMotor.class,"mrb");
-        // Most robots need the motor on one side to be reversed to drive forward
+        mrb = hardwareMap.get(DcMotor.class,"mrb");
+         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         mlb.setDirection(DcMotorSimple.Direction.REVERSE);
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -80,8 +80,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
-        // run until the end of the match (driver presses STOP)
+       // run until he end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry-
@@ -95,8 +94,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            leftPower    = Range.clip(drive + turn, 1.0, -1.0) ;
+            rightPower   = Range.clip(drive - turn, 1.0, -1.0) ;
+1212
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
