@@ -85,6 +85,7 @@ import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.hardware.HardwareFactory;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.FtcRobotControllerServiceState;
+import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
@@ -724,7 +725,12 @@ public class FtcRobotControllerActivity extends Activity
   }
 
   protected OpModeRegister createOpModeRegister() {
-    return new FtcOpModeRegister();
+    return new OpModeRegister() {
+      @Override
+      public void register(OpModeManager manager) {
+
+      }
+    };
   }
 
   private void shutdownRobot() {

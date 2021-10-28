@@ -1,0 +1,3230 @@
+Index: FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Linear.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* Copyright (c) 2017 FIRST. All rights reserved.\r\n *\r\n * Redistribution and use in source and binary forms, with or without modification,\r\n * are permitted (subject to the limitations in the disclaimer below) provided that\r\n * the following conditions are met:\r\n *\r\n * Redistributions of source code must retain the above copyright notice, this list\r\n * of conditions and the following disclaimer.\r\n *\r\n * Redistributions in binary form must reproduce the above copyright notice, this\r\n * list of conditions and the following disclaimer in the documentation and/or\r\n * other materials provided with the distribution.\r\n *\r\n * Neither the name of FIRST nor the names of its contributors may be used to endorse or\r\n * promote products derived from this software without specific prior written permission.\r\n *\r\n * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS\r\n * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\r\n * \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\r\n * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\r\n * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE\r\n * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\r\n * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\r\n * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\r\n * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\r\n * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\r\n * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\r\n */\r\n\r\npackage org.firstinspires.ftc.robotcontroller.external.samples;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;\r\nimport com.qualcomm.robotcore.eventloop.opmode.TeleOp;\r\nimport com.qualcomm.robotcore.eventloop.opmode.Disabled;\r\nimport com.qualcomm.robotcore.hardware.DcMotor;\r\nimport com.qualcomm.robotcore.hardware.DcMotorSimple;\r\nimport com.qualcomm.robotcore.util.ElapsedTime;\r\nimport com.qualcomm.robotcore.util.Range;\r\n\r\n\r\n/**\r\n * This file contains an minimal example of a Linear \"OpMode\". An OpMode is a 'program' that runs in either\r\n * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu\r\n * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode\r\n * class is instantiated on the Robot Controller and executed.\r\n *\r\n * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot\r\n * It includes all the skeletal structure that all linear OpModes contain.\r\n *\r\n * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.\r\n * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list\r\n */\r\n\r\n@TeleOp(name=\"AA\", group=\"Linear Opmode\")\r\npublic class BasicOpMode_Linear extends LinearOpMode {\r\n\r\n    // Declare OpMode members.\r\n    private ElapsedTime runtime = new ElapsedTime();\r\n    private DcMotor leftDrive = null;\r\n    private DcMotor rightDrive = null;\r\n    private DcMotor mlb = null;\r\n    private DcMotor mrb = null;\r\n    @Override\r\n    public void runOpMode() {\r\n        telemetry.addData(\"Status\", \"Initialized\");\r\n        telemetry.update();\r\n\r\n        // Initialize the hardware variables. Note that the strings used here as parameters\r\n        // to 'get' must correspond to the names assigned during the robot configuration\r\n        // step (using the FTC Robot Controller app on the phone).\r\n        leftDrive = hardwareMap.get(DcMotor.class,\"left_drive\");\r\n        rightDrive = hardwareMap.get(DcMotor.class,\"right_drive\");\r\n        mlb = hardwareMap.get(DcMotor.class,\"mlb\");\r\n        mrb  = hardwareMap.get(DcMotor.class,\"mrb\");\r\n        // Most robots need the motor on one side to be reversed to drive forward\r\n        // Reverse the motor that runs backwards when connected directly to the battery\r\n        mlb.setDirection(DcMotorSimple.Direction.REVERSE);\r\n        //rightDrive.setDirection(DcMotor.Direction.REVERSE);\r\n        leftDrive.setDirection(DcMotorSimple.Direction.REVERSE);\r\n        // Wait for the game to start (driver presses PLAY)\r\n        waitForStart();\r\n        runtime.reset();\r\n\r\n        // run until the end of the match (driver presses STOP)\r\n        while (opModeIsActive()) {\r\n\r\n            // Setup a variable for each drive wheel to save power level for telemetry-\r\n            double leftPower;\r\n            double rightPower;\r\n\r\n            // Choose to drive using either Tank Mode, or POV Mode\r\n            // Comment out the method that's not used.  The default below is POV.\r\n\r\n            // POV Mode uses left stick to go forward, and right stick to turn.\r\n            // - This uses basic math to combine motions and is easier to drive straight.\r\n            double drive = -gamepad1.left_stick_y;\r\n            double turn  =  gamepad1.right_stick_x;\r\n            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;\r\n            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;\r\n\r\n            // Tank Mode uses one stick to control each wheel.\r\n            // - This requires no math, but it is hard to drive forward slowly and keep straight.\r\n            // leftPower  = -gamepad1.left_stick_y ;\r\n            // rightPower = -gamepad1.right_stick_y ;\r\n\r\n            // Send calculated power to wheels\r\n            leftDrive.setPower(leftPower);\r\n            rightDrive.setPower(rightPower);\r\n            mlb.setPower(leftPower);\r\n            mrb.setPower(rightPower);\r\n            // Show the elapsed game time and wheel power.\r\n            telemetry.addData(\"Status\", \"Run Time: \" + runtime.toString());\r\n            telemetry.addData(\"Motors\", \"left (%.2f), right (%.2f)\", leftPower, rightPower);\r\n            telemetry.update();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Linear.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Linear.java	(date 1635277884628)
+@@ -64,7 +64,7 @@
+     public void runOpMode() {
+         telemetry.addData("Status", "Initialized");
+         telemetry.update();
+-
++ 
+         // Initialize the hardware variables. Note that the strings used here as parameters
+         // to 'get' must correspond to the names assigned during the robot configuration
+         // step (using the FTC Robot Controller app on the phone).
+@@ -74,9 +74,11 @@
+         mrb  = hardwareMap.get(DcMotor.class,"mrb");
+         // Most robots need the motor on one side to be reversed to drive forward
+         // Reverse the motor that runs backwards when connected directly to the battery
+-        mlb.setDirection(DcMotorSimple.Direction.REVERSE);
+-        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
++        //mlb.setDirection(DcMotorSimple.Direction.REVERSE);
+         leftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
++        rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
++
++
+         // Wait for the game to start (driver presses PLAY)
+         waitForStart();
+         runtime.reset();
+@@ -95,8 +97,8 @@
+             // - This uses basic math to combine motions and is easier to drive straight.
+             double drive = -gamepad1.left_stick_y;
+             double turn  =  gamepad1.right_stick_x;
+-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
++            leftPower    = Range.clip(drive - turn, -1.0, 1.0) ;
++            rightPower   = Range.clip(drive + turn, -1.0, 1.0) ;
+ 
+             // Tank Mode uses one stick to control each wheel.
+             // - This requires no math, but it is hard to drive forward slowly and keep straight.
+@@ -106,8 +108,8 @@
+             // Send calculated power to wheels
+             leftDrive.setPower(leftPower);
+             rightDrive.setPower(rightPower);
+-            mlb.setPower(leftPower);
+-            mrb.setPower(rightPower);
++            mlb.setPower(rightPower);
++            mrb.setPower(leftPower);
+             // Show the elapsed game time and wheel power.
+             telemetry.addData("Status", "Run Time: " + runtime.toString());
+             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackingWheelLateralDistanceTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackingWheelLateralDistanceTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackingWheelLateralDistanceTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,130 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.util.Angle;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+-import com.qualcomm.robotcore.util.RobotLog;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
+-
+-/**
+- * Opmode designed to assist the user in tuning the `StandardTrackingWheelLocalizer`'s
+- * LATERAL_DISTANCE value. The LATERAL_DISTANCE is the center-to-center distance of the parallel
+- * wheels.
+- *
+- * Tuning Routine:
+- *
+- * 1. Set the LATERAL_DISTANCE value in StandardTrackingWheelLocalizer.java to the physical
+- * measured value. This need only be an estimated value as you will be tuning it anyways.
+- *
+- * 2. Make a mark on the bot (with a piece of tape or sharpie or however you wish) and make an
+- * similar mark right below the indicator on your bot. This will be your reference point to
+- * ensure you've turned exactly 360°.
+- *
+- * 3. Although not entirely necessary, having the bot's pose being drawn in dashbooard does help
+- * identify discrepancies in the LATERAL_DISTANCE value. To access the dashboard,
+- * connect your computer to the RC's WiFi network. In your browser, navigate to
+- * https://192.168.49.1:8080/dash if you're using the RC phone or https://192.168.43.1:8080/dash
+- * if you are using the Control Hub.
+- * Ensure the field is showing (select the field view in top right of the page).
+- *
+- * 4. Press play to begin the tuning routine.
+- *
+- * 5. Use the right joystick on gamepad 1 to turn the bot counterclockwise.
+- *
+- * 6. Spin the bot 10 times, counterclockwise. Make sure to keep track of these turns.
+- *
+- * 7. Once the bot has finished spinning 10 times, press A to finishing the routine. The indicators
+- * on the bot and on the ground you created earlier should be lined up.
+- *
+- * 8. Your effective LATERAL_DISTANCE will be given. Stick this value into your
+- * StandardTrackingWheelLocalizer.java class.
+- *
+- * 9. If this value is incorrect, run the routine again while adjusting the LATERAL_DISTANCE value
+- * yourself. Read the heading output and follow the advice stated in the note below to manually
+- * nudge the values yourself.
+- *
+- * Note:
+- * It helps to pay attention to how the pose on the field is drawn in dashboard. A blue circle with
+- * a line from the circumference to the center should be present, representing the bot. The line
+- * indicates forward. If your LATERAL_DISTANCE value is tuned currently, the pose drawn in
+- * dashboard should keep track with the pose of your actual bot. If the drawn bot turns slower than
+- * the actual bot, the LATERAL_DISTANCE should be decreased. If the drawn bot turns faster than the
+- * actual bot, the LATERAL_DISTANCE should be increased.
+- *
+- * If your drawn bot oscillates around a point in dashboard, don't worry. This is because the
+- * position of the perpendicular wheel isn't perfectly set and causes a discrepancy in the
+- * effective center of rotation. You can ignore this effect. The center of rotation will be offset
+- * slightly but your heading will still be fine. This does not affect your overall tracking
+- * precision. The heading should still line up.
+- */
+-@Config
+-@TeleOp(group = "drive")
+-public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
+-    public static int NUM_TURNS = 10;
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        if (!(drive.getLocalizer() instanceof StandardTrackingWheelLocalizer)) {
+-            RobotLog.setGlobalErrorMsg("StandardTrackingWheelLocalizer is not being set in the "
+-                    + "drive class. Ensure that \"setLocalizer(new StandardTrackingWheelLocalizer"
+-                    + "(hardwareMap));\" is called in SampleMecanumDrive.java");
+-        }
+-
+-        telemetry.addLine("Prior to beginning the routine, please read the directions "
+-                + "located in the comments of the opmode file.");
+-        telemetry.addLine("Press play to begin the tuning routine.");
+-        telemetry.addLine("");
+-        telemetry.addLine("Press Y/△ to stop the routine.");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        telemetry.clearAll();
+-        telemetry.update();
+-
+-        double headingAccumulator = 0;
+-        double lastHeading = 0;
+-
+-        boolean tuningFinished = false;
+-
+-        while (!isStopRequested() && !tuningFinished) {
+-            Pose2d vel = new Pose2d(0, 0, -gamepad1.right_stick_x);
+-            drive.setDrivePower(vel);
+-
+-            drive.update();
+-
+-            double heading = drive.getPoseEstimate().getHeading();
+-            double deltaHeading = heading - lastHeading;
+-
+-            headingAccumulator += Angle.normDelta(deltaHeading);
+-            lastHeading = heading;
+-
+-            telemetry.clearAll();
+-            telemetry.addLine("Total Heading (deg): " + Math.toDegrees(headingAccumulator));
+-            telemetry.addLine("Raw Heading (deg): " + Math.toDegrees(heading));
+-            telemetry.addLine();
+-            telemetry.addLine("Press Y/△ to conclude routine");
+-            telemetry.update();
+-
+-            if (gamepad1.y)
+-                tuningFinished = true;
+-        }
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Localizer's total heading: " + Math.toDegrees(headingAccumulator) + "°");
+-        telemetry.addLine("Effective LATERAL_DISTANCE: " +
+-                (headingAccumulator / (NUM_TURNS * Math.PI * 2)) * StandardTrackingWheelLocalizer.LATERAL_DISTANCE);
+-
+-        telemetry.update();
+-
+-        while (!isStopRequested()) idle();
+-    }
+-}
+\ No newline at end of file
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleTankDrive.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleTankDrive.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleTankDrive.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,406 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive;
+-
+-import androidx.annotation.NonNull;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.canvas.Canvas;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+-import com.acmerobotics.roadrunner.control.PIDCoefficients;
+-import com.acmerobotics.roadrunner.control.PIDFController;
+-import com.acmerobotics.roadrunner.drive.DriveSignal;
+-import com.acmerobotics.roadrunner.drive.TankDrive;
+-import com.acmerobotics.roadrunner.followers.TankPIDVAFollower;
+-import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.profile.MotionProfile;
+-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+-import com.acmerobotics.roadrunner.profile.MotionState;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
+-import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.TankVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
+-import com.acmerobotics.roadrunner.util.NanoClock;
+-import com.qualcomm.hardware.bosch.BNO055IMU;
+-import com.qualcomm.hardware.lynx.LynxModule;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.hardware.DcMotorEx;
+-import com.qualcomm.robotcore.hardware.HardwareMap;
+-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+-import com.qualcomm.robotcore.hardware.VoltageSensor;
+-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+-
+-import org.firstinspires.ftc.teamcode.util.DashboardUtil;
+-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+-
+-import java.util.ArrayList;
+-import java.util.Arrays;
+-import java.util.List;
+-
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+-
+-/*
+- * Simple tank drive hardware implementation for REV hardware.
+- */
+-@Config
+-public class SampleTankDrive extends TankDrive {
+-    public static PIDCoefficients AXIAL_PID = new PIDCoefficients(0, 0, 0);
+-    public static PIDCoefficients CROSS_TRACK_PID = new PIDCoefficients(0, 0, 0);
+-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+-
+-    public static double VX_WEIGHT = 1;
+-    public static double OMEGA_WEIGHT = 1;
+-
+-    public enum Mode {
+-        IDLE,
+-        TURN,
+-        FOLLOW_TRAJECTORY
+-    }
+-
+-    private FtcDashboard dashboard;
+-    private NanoClock clock;
+-
+-    private Mode mode;
+-
+-    private PIDFController turnController;
+-    private MotionProfile turnProfile;
+-    private double turnStart;
+-
+-    private TrajectoryVelocityConstraint velConstraint;
+-    private TrajectoryAccelerationConstraint accelConstraint;
+-    private TrajectoryFollower follower;
+-
+-    private List<Pose2d> poseHistory;
+-
+-    private List<DcMotorEx> motors, leftMotors, rightMotors;
+-    private BNO055IMU imu;
+-
+-    private VoltageSensor batteryVoltageSensor;
+-
+-    public SampleTankDrive(HardwareMap hardwareMap) {
+-        super(kV, kA, kStatic, TRACK_WIDTH);
+-
+-        dashboard = FtcDashboard.getInstance();
+-        dashboard.setTelemetryTransmissionInterval(25);
+-
+-        clock = NanoClock.system();
+-
+-        mode = Mode.IDLE;
+-
+-        turnController = new PIDFController(HEADING_PID);
+-        turnController.setInputBounds(0, 2 * Math.PI);
+-
+-        velConstraint = new MinVelocityConstraint(Arrays.asList(
+-                new AngularVelocityConstraint(MAX_ANG_VEL),
+-                new TankVelocityConstraint(MAX_VEL, TRACK_WIDTH)
+-        ));
+-        accelConstraint = new ProfileAccelerationConstraint(MAX_ACCEL);
+-        follower = new TankPIDVAFollower(AXIAL_PID, CROSS_TRACK_PID,
+-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+-
+-        poseHistory = new ArrayList<>();
+-
+-        LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
+-
+-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+-
+-        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+-            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+-        }
+-
+-        // TODO: adjust the names of the following hardware devices to match your configuration
+-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+-        imu.initialize(parameters);
+-
+-        // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
+-        // upward (normal to the floor) using a command like the following:
+-        // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+-
+-        // add/remove motors depending on your robot (e.g., 6WD)
+-        DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+-        DcMotorEx leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+-        DcMotorEx rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+-        DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+-
+-        motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
+-        leftMotors = Arrays.asList(leftFront, leftRear);
+-        rightMotors = Arrays.asList(rightFront, rightRear);
+-
+-        for (DcMotorEx motor : motors) {
+-            MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
+-            motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
+-            motor.setMotorType(motorConfigurationType);
+-        }
+-
+-        if (RUN_USING_ENCODER) {
+-            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+-        }
+-
+-        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+-
+-        if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
+-            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+-        }
+-
+-        // TODO: reverse any motors using DcMotor.setDirection()
+-
+-        // TODO: if desired, use setLocalizer() to change the localization method
+-        // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
+-    }
+-
+-    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
+-        return new TrajectoryBuilder(startPose, velConstraint, accelConstraint);
+-    }
+-
+-    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, boolean reversed) {
+-        return new TrajectoryBuilder(startPose, reversed, velConstraint, accelConstraint);
+-    }
+-
+-    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, double startHeading) {
+-        return new TrajectoryBuilder(startPose, startHeading, velConstraint, accelConstraint);
+-    }
+-
+-    public void turnAsync(double angle) {
+-        double heading = getPoseEstimate().getHeading();
+-        turnProfile = MotionProfileGenerator.generateSimpleMotionProfile(
+-                new MotionState(heading, 0, 0, 0),
+-                new MotionState(heading + angle, 0, 0, 0),
+-                MAX_ANG_VEL,
+-                MAX_ANG_ACCEL
+-        );
+-        turnStart = clock.seconds();
+-        mode = Mode.TURN;
+-    }
+-
+-    public void turn(double angle) {
+-        turnAsync(angle);
+-        waitForIdle();
+-    }
+-
+-    public void followTrajectoryAsync(Trajectory trajectory) {
+-        poseHistory.clear();
+-        follower.followTrajectory(trajectory);
+-        mode = Mode.FOLLOW_TRAJECTORY;
+-    }
+-
+-    public void followTrajectory(Trajectory trajectory) {
+-        followTrajectoryAsync(trajectory);
+-        waitForIdle();
+-    }
+-
+-    public Pose2d getLastError() {
+-        switch (mode) {
+-            case FOLLOW_TRAJECTORY:
+-                return follower.getLastError();
+-            case TURN:
+-                return new Pose2d(0, 0, turnController.getLastError());
+-            case IDLE:
+-                return new Pose2d();
+-        }
+-        throw new AssertionError();
+-    }
+-
+-    public void update() {
+-        updatePoseEstimate();
+-
+-        Pose2d currentPose = getPoseEstimate();
+-        Pose2d lastError = getLastError();
+-
+-        poseHistory.add(currentPose);
+-
+-        TelemetryPacket packet = new TelemetryPacket();
+-        Canvas fieldOverlay = packet.fieldOverlay();
+-
+-        packet.put("mode", mode);
+-
+-        packet.put("x", currentPose.getX());
+-        packet.put("y", currentPose.getY());
+-        packet.put("heading (deg)", Math.toDegrees(currentPose.getHeading()));
+-
+-        packet.put("xError", lastError.getX());
+-        packet.put("yError", lastError.getY());
+-        packet.put("headingError (deg)", Math.toDegrees(lastError.getHeading()));
+-
+-        switch (mode) {
+-            case IDLE:
+-                // do nothing
+-                break;
+-            case TURN: {
+-                double t = clock.seconds() - turnStart;
+-
+-                MotionState targetState = turnProfile.get(t);
+-
+-                turnController.setTargetPosition(targetState.getX());
+-
+-                double correction = turnController.update(currentPose.getHeading());
+-
+-                double targetOmega = targetState.getV();
+-                double targetAlpha = targetState.getA();
+-                setDriveSignal(new DriveSignal(new Pose2d(
+-                        0, 0, targetOmega + correction
+-                ), new Pose2d(
+-                        0, 0, targetAlpha
+-                )));
+-
+-                if (t >= turnProfile.duration()) {
+-                    mode = Mode.IDLE;
+-                    setDriveSignal(new DriveSignal());
+-                }
+-
+-                break;
+-            }
+-            case FOLLOW_TRAJECTORY: {
+-                setDriveSignal(follower.update(currentPose));
+-
+-                Trajectory trajectory = follower.getTrajectory();
+-
+-                fieldOverlay.setStrokeWidth(1);
+-                fieldOverlay.setStroke("4CAF50");
+-                DashboardUtil.drawSampledPath(fieldOverlay, trajectory.getPath());
+-                double t = follower.elapsedTime();
+-                DashboardUtil.drawRobot(fieldOverlay, trajectory.get(t));
+-
+-                fieldOverlay.setStroke("#3F51B5");
+-                DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory);
+-                DashboardUtil.drawRobot(fieldOverlay, currentPose);
+-
+-                if (!follower.isFollowing()) {
+-                    mode = Mode.IDLE;
+-                    setDriveSignal(new DriveSignal());
+-                }
+-
+-                break;
+-            }
+-        }
+-
+-        dashboard.sendTelemetryPacket(packet);
+-    }
+-
+-    public void waitForIdle() {
+-        while (!Thread.currentThread().isInterrupted() && isBusy()) {
+-            update();
+-        }
+-    }
+-
+-    public boolean isBusy() {
+-        return mode != Mode.IDLE;
+-    }
+-
+-    public void setMode(DcMotor.RunMode runMode) {
+-        for (DcMotorEx motor : motors) {
+-            motor.setMode(runMode);
+-        }
+-    }
+-
+-    public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
+-        for (DcMotorEx motor : motors) {
+-            motor.setZeroPowerBehavior(zeroPowerBehavior);
+-        }
+-    }
+-
+-    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
+-        PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
+-                coefficients.p, coefficients.i, coefficients.d,
+-                coefficients.f * 12 / batteryVoltageSensor.getVoltage()
+-        );
+-        for (DcMotorEx motor : motors) {
+-            motor.setPIDFCoefficients(runMode, compensatedCoefficients);
+-        }
+-    }
+-
+-    public void setWeightedDrivePower(Pose2d drivePower) {
+-        Pose2d vel = drivePower;
+-
+-        if (Math.abs(drivePower.getX()) + Math.abs(drivePower.getHeading()) > 1) {
+-            // re-normalize the powers according to the weights
+-            double denom = VX_WEIGHT * Math.abs(drivePower.getX())
+-                    + OMEGA_WEIGHT * Math.abs(drivePower.getHeading());
+-
+-            vel = new Pose2d(
+-                    VX_WEIGHT * drivePower.getX(),
+-                    0,
+-                    OMEGA_WEIGHT * drivePower.getHeading()
+-            ).div(denom);
+-        }
+-
+-        setDrivePower(vel);
+-    }
+-
+-    @NonNull
+-    @Override
+-    public List<Double> getWheelPositions() {
+-        double leftSum = 0, rightSum = 0;
+-        for (DcMotorEx leftMotor : leftMotors) {
+-            leftSum += encoderTicksToInches(leftMotor.getCurrentPosition());
+-        }
+-        for (DcMotorEx rightMotor : rightMotors) {
+-            rightSum += encoderTicksToInches(rightMotor.getCurrentPosition());
+-        }
+-        return Arrays.asList(leftSum / leftMotors.size(), rightSum / rightMotors.size());
+-    }
+-
+-    public List<Double> getWheelVelocities() {
+-        double leftSum = 0, rightSum = 0;
+-        for (DcMotorEx leftMotor : leftMotors) {
+-            leftSum += encoderTicksToInches(leftMotor.getVelocity());
+-        }
+-        for (DcMotorEx rightMotor : rightMotors) {
+-            rightSum += encoderTicksToInches(rightMotor.getVelocity());
+-        }
+-        return Arrays.asList(leftSum / leftMotors.size(), rightSum / rightMotors.size());
+-    }
+-
+-    @Override
+-    public void setMotorPowers(double v, double v1) {
+-        for (DcMotorEx leftMotor : leftMotors) {
+-            leftMotor.setPower(v);
+-        }
+-        for (DcMotorEx rightMotor : rightMotors) {
+-            rightMotor.setPower(v1);
+-        }
+-    }
+-
+-    @Override
+-    public double getRawExternalHeading() {
+-        return imu.getAngularOrientation().firstAngle;
+-    }
+-
+-    @Override
+-    public Double getExternalHeadingVelocity() {
+-        // TODO: This must be changed to match your configuration
+-        //                           | Z axis
+-        //                           |
+-        //     (Motor Port Side)     |   / X axis
+-        //                       ____|__/____
+-        //          Y axis     / *   | /    /|   (IO Side)
+-        //          _________ /______|/    //      I2C
+-        //                   /___________ //     Digital
+-        //                  |____________|/      Analog
+-        //
+-        //                 (Servo Port Side)
+-        //
+-        // The positive x axis points toward the USB port(s)
+-        //
+-        // Adjust the axis rotation rate as necessary
+-        // Rotate about the z axis is the default assuming your REV Hub/Control Hub is laying
+-        // flat on a surface
+-
+-        return (double) imu.getAngularVelocity().zRotationRate;
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TurnTest.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TurnTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TurnTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,27 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * This is a simple routine to test turning capabilities.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class TurnTest extends LinearOpMode {
+-    public static double ANGLE = 90; // deg
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        drive.turn(Math.toRadians(ANGLE));
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/FollowerPIDTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/FollowerPIDTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/FollowerPIDTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,51 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
+- * classes). The robot drives in a DISTANCE-by-DISTANCE square indefinitely. Utilization of the
+- * dashboard is recommended for this tuning routine. To access the dashboard, connect your computer
+- * to the RC's WiFi network. In your browser, navigate to https://192.168.49.1:8080/dash if you're
+- * using the RC phone or https://192.168.43.1:8080/dash if you are using the Control Hub. Once
+- * you've successfully connected, start the program, and your robot will begin driving in a square.
+- * You should observe the target position (green) and your pose estimate (blue) and adjust your
+- * follower PID coefficients such that you follow the target position as accurately as possible.
+- * If you are using SampleMecanumDrive, you should be tuning TRANSLATIONAL_PID and HEADING_PID.
+- * If you are using SampleTankDrive, you should be tuning AXIAL_PID, CROSS_TRACK_PID, and HEADING_PID.
+- * These coefficients can be tuned live in dashboard.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class FollowerPIDTuner extends LinearOpMode {
+-    public static double DISTANCE = 48; // in
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        Pose2d startPose = new Pose2d(-DISTANCE / 2, -DISTANCE / 2, 0);
+-
+-        drive.setPoseEstimate(startPose);
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        while (!isStopRequested()) {
+-            Trajectory traj = drive.trajectoryBuilder(startPose)
+-                    .forward(DISTANCE)
+-                    .build();
+-            drive.followTrajectory(traj);
+-            drive.turn(Math.toRadians(90));
+-
+-            startPose = traj.end().plus(new Pose2d(0, 0, Math.toRadians(90)));
+-        }
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/LocalizationTest.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/LocalizationTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/LocalizationTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,100 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.qualcomm.hardware.lynx.LynxModule;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.hardware.DcMotorEx;
+-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+-import com.qualcomm.robotcore.hardware.HardwareMap;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/**
+- * This is a simple teleop routine for testing localization. Drive the robot around like a normal
+- * teleop routine and make sure the robot's estimated pose matches the robot's actual pose (slight
+- * errors are not out of the ordinary, especially with sudden drive motions). The goal of this
+- * exercise is to ascertain whether the localizer has been configured properly (note: the pure
+- * encoder localizer heading may be significantly off if the track width has not been tuned).
+- */
+-@TeleOp(group = "drive")
+-public class LocalizationTest extends LinearOpMode {
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+-
+-        waitForStart();
+-
+-        while (!isStopRequested()) {
+-            drive.setWeightedDrivePower(
+-                    new Pose2d(
+-                            -gamepad1.left_stick_y,
+-                            -gamepad1.left_stick_x,
+-                            -gamepad1.right_stick_x
+-                    )
+-            );
+-
+-            drive.update();
+-
+-            Pose2d poseEstimate = drive.getPoseEstimate();
+-            telemetry.addData("x", poseEstimate.getX());
+-            telemetry.addData("y", poseEstimate.getY());
+-            telemetry.addData("heading", poseEstimate.getHeading());
+-            telemetry.update();
+-        }
+-    }
+-    class Robot {
+-        private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+-
+-        public Robot(HardwareMap hardwareMap) {
+-            // Initialize motors
+-            leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+-            leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+-            rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+-            rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+-
+-            // Reverse right side motor directions
+-            // This may need to be flipped to the left side depending on your motor rotation direction
+-            rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+-            rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+-
+-            // Turn on bulk reads to help optimize loop times
+-            for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+-                module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+-            }
+-        }
+-
+-        // Mecanum example code from gm0
+-        // https://gm0.org/en/stable/docs/software/mecanum-drive.html
+-        public void setDrivePower(double x, double y, double rx) {
+-            double powerFrontLeft = y + x + rx;
+-            double powerFrontRight = y - x - rx;
+-            double powerBackLeft = y - x + rx;
+-            double powerBackRight = y + x - rx;
+-
+-            if (Math.abs(powerFrontLeft) > 1 || Math.abs(powerBackLeft) > 1 ||
+-                    Math.abs(powerFrontRight) > 1 || Math.abs(powerBackRight) > 1) {
+-                // Find the largest power
+-                double max;
+-                max = Math.max(Math.abs(powerFrontLeft), Math.abs(powerBackLeft));
+-                max = Math.max(Math.abs(powerFrontRight), max);
+-                max = Math.max(Math.abs(powerBackRight), max);
+-
+-                // Divide everything by max (it's positive so we don't need to worry
+-                // about signs)
+-                powerFrontLeft /= max;
+-                powerBackLeft /= max;
+-                powerFrontRight /= max;
+-                powerBackRight /= max;
+-            }
+-
+-            leftFront.setPower(powerFrontLeft);
+-            rightFront.setPower(powerFrontRight);
+-            leftRear.setPower(powerBackLeft);
+-            rightRear.setPower(powerBackRight);
+-        }
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MaxAngularVeloTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MaxAngularVeloTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MaxAngularVeloTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,70 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.util.ElapsedTime;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-import java.util.Objects;
+-
+-/**
+- * This routine is designed to calculate the maximum angular velocity your bot can achieve under load.
+- * <p>
+- * Upon pressing start, your bot will turn at max power for RUNTIME seconds.
+- * <p>
+- * Further fine tuning of MAX_ANG_VEL may be desired.
+- */
+-
+-@Config
+-@Autonomous(group = "drive")
+-public class MaxAngularVeloTuner extends LinearOpMode {
+-    public static double RUNTIME = 4.0;
+-
+-    private ElapsedTime timer;
+-    private double maxAngVelocity = 0.0;
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+-
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        telemetry.addLine("Your bot will turn at full speed for " + RUNTIME + " seconds.");
+-        telemetry.addLine("Please ensure you have enough space cleared.");
+-        telemetry.addLine("");
+-        telemetry.addLine("Press start when ready.");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        telemetry.clearAll();
+-        telemetry.update();
+-
+-        drive.setDrivePower(new Pose2d(0, 0, 1));
+-        timer = new ElapsedTime();
+-
+-        while (!isStopRequested() && timer.seconds() < RUNTIME) {
+-            drive.updatePoseEstimate();
+-
+-            Pose2d poseVelo = Objects.requireNonNull(drive.getPoseVelocity(), "poseVelocity() must not be null. Ensure that the getWheelVelocities() method has been overridden in your localizer.");
+-
+-            maxAngVelocity = Math.max(poseVelo.getHeading(), maxAngVelocity);
+-        }
+-
+-        drive.setDrivePower(new Pose2d());
+-
+-        telemetry.addData("Max Angular Velocity (rad)", maxAngVelocity);
+-        telemetry.addData("Max Angular Velocity (deg)", Math.toDegrees(maxAngVelocity));
+-        telemetry.update();
+-
+-        while (!isStopRequested()) idle();
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackingWheelForwardOffsetTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackingWheelForwardOffsetTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackingWheelForwardOffsetTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,103 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.util.Angle;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.util.MovingStatistics;
+-import com.qualcomm.robotcore.util.RobotLog;
+-
+-import org.firstinspires.ftc.robotcore.internal.system.Misc;
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
+-
+-/**
+- * This routine determines the effective forward offset for the lateral tracking wheel.
+- * The procedure executes a point turn at a given angle for a certain number of trials,
+- * along with a specified delay in milliseconds. The purpose of this is to track the
+- * change in the y position during the turn. The offset, or distance, of the lateral tracking
+- * wheel from the center or rotation allows the wheel to spin during a point turn, leading
+- * to an incorrect measurement for the y position. This creates an arc around around
+- * the center of rotation with an arc length of change in y and a radius equal to the forward
+- * offset. We can compute this offset by calculating (change in y position) / (change in heading)
+- * which returns the radius if the angle (change in heading) is in radians. This is based
+- * on the arc length formula of length = theta * radius.
+- *
+- * To run this routine, simply adjust the desired angle and specify the number of trials
+- * and the desired delay. Then, run the procedure. Once it finishes, it will print the
+- * average of all the calculated forward offsets derived from the calculation. This calculated
+- * forward offset is then added onto the current forward offset to produce an overall estimate
+- * for the forward offset. You can run this procedure as many times as necessary until a
+- * satisfactory result is produced.
+- */
+-@Config
+-@Autonomous(group="drive")
+-public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
+-    public static double ANGLE = 180; // deg
+-    public static int NUM_TRIALS = 5;
+-    public static int DELAY = 1000; // ms
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        if (!(drive.getLocalizer() instanceof StandardTrackingWheelLocalizer)) {
+-            RobotLog.setGlobalErrorMsg("StandardTrackingWheelLocalizer is not being set in the "
+-                    + "drive class. Ensure that \"setLocalizer(new StandardTrackingWheelLocalizer"
+-                    + "(hardwareMap));\" is called in SampleMecanumDrive.java");
+-        }
+-
+-        telemetry.addLine("Press play to begin the forward offset tuner");
+-        telemetry.addLine("Make sure your robot has enough clearance to turn smoothly");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Running...");
+-        telemetry.update();
+-
+-        MovingStatistics forwardOffsetStats = new MovingStatistics(NUM_TRIALS);
+-        for (int i = 0; i < NUM_TRIALS; i++) {
+-            drive.setPoseEstimate(new Pose2d());
+-
+-            // it is important to handle heading wraparounds
+-            double headingAccumulator = 0;
+-            double lastHeading = 0;
+-
+-            drive.turnAsync(Math.toRadians(ANGLE));
+-
+-            while (!isStopRequested() && drive.isBusy()) {
+-                double heading = drive.getPoseEstimate().getHeading();
+-                headingAccumulator += Angle.norm(heading - lastHeading);
+-                lastHeading = heading;
+-
+-                drive.update();
+-            }
+-
+-            double forwardOffset = StandardTrackingWheelLocalizer.FORWARD_OFFSET +
+-                    drive.getPoseEstimate().getY() / headingAccumulator;
+-            forwardOffsetStats.add(forwardOffset);
+-
+-            sleep(DELAY);
+-        }
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Tuning complete");
+-        telemetry.addLine(Misc.formatInvariant("Effective forward offset = %.2f (SE = %.3f)",
+-                forwardOffsetStats.getMean(),
+-                forwardOffsetStats.getStandardDeviation() / Math.sqrt(NUM_TRIALS)));
+-        telemetry.update();
+-
+-        while (!isStopRequested()) {
+-            idle();
+-        }
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/BackAndForth.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/BackAndForth.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/BackAndForth.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,52 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
+- * classes). The robot drives back and forth in a straight line indefinitely. Utilization of the
+- * dashboard is recommended for this tuning routine. To access the dashboard, connect your computer
+- * to the RC's WiFi network. In your browser, navigate to https://192.168.49.1:8080/dash if you're
+- * using the RC phone or https://192.168.43.1:8080/dash if you are using the Control Hub. Once
+- * you've successfully connected, start the program, and your robot will begin moving forward and
+- * backward. You should observe the target position (green) and your pose estimate (blue) and adjust
+- * your follower PID coefficients such that you follow the target position as accurately as possible.
+- * If you are using SampleMecanumDrive, you should be tuning TRANSLATIONAL_PID and HEADING_PID.
+- * If you are using SampleTankDrive, you should be tuning AXIAL_PID, CROSS_TRACK_PID, and HEADING_PID.
+- * These coefficients can be tuned live in dashboard.
+- *
+- * This opmode is designed as a convenient, coarse tuning for the follower PID coefficients. It
+- * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class BackAndForth extends LinearOpMode {
+-
+-    public static double DISTANCE = 50;
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
+-                .forward(DISTANCE)
+-                .build();
+-
+-        Trajectory trajectoryBackward = drive.trajectoryBuilder(trajectoryForward.end())
+-                .back(DISTANCE)
+-                .build();
+-
+-        waitForStart();
+-
+-        while (opModeIsActive() && !isStopRequested()) {
+-            drive.followTrajectory(trajectoryForward);
+-            drive.followTrajectory(trajectoryBackward);
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/StandardTrackingWheelLocalizer.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/StandardTrackingWheelLocalizer.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/StandardTrackingWheelLocalizer.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,80 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive;
+-
+-import androidx.annotation.NonNull;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
+-import com.qualcomm.robotcore.hardware.DcMotorEx;
+-import com.qualcomm.robotcore.hardware.HardwareMap;
+-import org.firstinspires.ftc.teamcode.util.Encoder;
+-
+-import java.util.Arrays;
+-import java.util.List;
+-
+-/*
+- * Sample tracking wheel localizer implementation assuming the standard configuration:
+- *
+- *    /--------------\
+- *    |     ____     |
+- *    |     ----     |
+- *    | ||        || |
+- *    | ||        || |
+- *    |              |
+- *    |              |
+- *    \--------------/
+- *
+- */
+-@Config
+-public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
+-    public static double TICKS_PER_REV = 0;
+-    public static double WHEEL_RADIUS = 2; // in
+-    public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
+-
+-    public static double LATERAL_DISTANCE = 10; // in; distance between the left and right wheels
+-    public static double FORWARD_OFFSET = 4; // in; offset of the lateral wheel
+-
+-    private Encoder leftEncoder, rightEncoder, frontEncoder;
+-
+-    public StandardTrackingWheelLocalizer(HardwareMap hardwareMap) {
+-        super(Arrays.asList(
+-                new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
+-                new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
+-                new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
+-        ));
+-
+-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftEncoder"));
+-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightEncoder"));
+-        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontEncoder"));
+-
+-        // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
+-    }
+-
+-    public static double encoderTicksToInches(double ticks) {
+-        return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
+-    }
+-
+-    @NonNull
+-    @Override
+-    public List<Double> getWheelPositions() {
+-        return Arrays.asList(
+-                encoderTicksToInches(leftEncoder.getCurrentPosition()),
+-                encoderTicksToInches(rightEncoder.getCurrentPosition()),
+-                encoderTicksToInches(frontEncoder.getCurrentPosition())
+-        );
+-    }
+-
+-    @NonNull
+-    @Override
+-    public List<Double> getWheelVelocities() {
+-        // TODO: If your encoder velocity can exceed 32767 counts / second (such as the REV Through Bore and other
+-        //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
+-        //  compensation method
+-
+-        return Arrays.asList(
+-                encoderTicksToInches(leftEncoder.getRawVelocity()),
+-                encoderTicksToInches(rightEncoder.getRawVelocity()),
+-                encoderTicksToInches(frontEncoder.getRawVelocity())
+-        );
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleMecanumDrive.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleMecanumDrive.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleMecanumDrive.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,430 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive;
+-
+-import androidx.annotation.NonNull;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.canvas.Canvas;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+-import com.acmerobotics.roadrunner.control.PIDCoefficients;
+-import com.acmerobotics.roadrunner.control.PIDFController;
+-import com.acmerobotics.roadrunner.drive.DriveSignal;
+-import com.acmerobotics.roadrunner.drive.MecanumDrive;
+-import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
+-import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.profile.MotionProfile;
+-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+-import com.acmerobotics.roadrunner.profile.MotionState;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
+-import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
+-import com.acmerobotics.roadrunner.trajectory.constraints.*;
+-import com.acmerobotics.roadrunner.util.NanoClock;
+-import com.qualcomm.hardware.bosch.BNO055IMU;
+-import com.qualcomm.hardware.lynx.LynxModule;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.hardware.DcMotorEx;
+-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+-import com.qualcomm.robotcore.hardware.HardwareMap;
+-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+-import com.qualcomm.robotcore.hardware.VoltageSensor;
+-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+-
+-import org.firstinspires.ftc.teamcode.util.DashboardUtil;
+-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+-
+-import java.util.ArrayList;
+-import java.util.Arrays;
+-import java.util.LinkedList;
+-import java.util.List;
+-
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+-
+-/*
+- * Simple mecanum drive hardware implementation for REV hardware.
+- */
+-@Config
+-public class SampleMecanumDrive extends MecanumDrive {
+-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(2, 0, 0);
+-
+-    public static double LATERAL_MULTIPLIER = 1;
+-
+-    public static double VX_WEIGHT = 1;
+-    public static double VY_WEIGHT = 1;
+-    public static double OMEGA_WEIGHT = 1;
+-
+-    public static int POSE_HISTORY_LIMIT = 100;
+-
+-    public enum Mode {
+-        IDLE,
+-        TURN,
+-        FOLLOW_TRAJECTORY
+-    }
+-
+-    private FtcDashboard dashboard;
+-    private NanoClock clock;
+-
+-    private Mode mode;
+-
+-    private PIDFController turnController;
+-    private MotionProfile turnProfile;
+-    private double turnStart;
+-
+-    private TrajectoryVelocityConstraint velConstraint;
+-    private TrajectoryAccelerationConstraint accelConstraint;
+-    private TrajectoryFollower follower;
+-
+-    private LinkedList<Pose2d> poseHistory;
+-
+-    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+-    private DcMotor mainCrawl;
+-    private List<DcMotorEx> motors;
+-    private BNO055IMU imu;
+-
+-    private VoltageSensor batteryVoltageSensor;
+-
+-    private Pose2d lastPoseOnTurn;
+-
+-    public SampleMecanumDrive(HardwareMap hardwareMap) {
+-        super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
+-
+-        dashboard = FtcDashboard.getInstance();
+-        dashboard.setTelemetryTransmissionInterval(25);
+-
+-        clock = NanoClock.system();
+-
+-        mode = Mode.IDLE;
+-
+-        turnController = new PIDFController(HEADING_PID);
+-        turnController.setInputBounds(0, 2 * Math.PI);
+-
+-        velConstraint = new MinVelocityConstraint(Arrays.asList(
+-                new AngularVelocityConstraint(MAX_ANG_VEL),
+-                new MecanumVelocityConstraint(MAX_VEL, TRACK_WIDTH)
+-        ));
+-        accelConstraint = new ProfileAccelerationConstraint(MAX_ACCEL);
+-        follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
+-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+-
+-        poseHistory = new LinkedList<>();
+-
+-        LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
+-
+-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+-
+-        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+-            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+-        }
+-
+-        // TODO: adjust the names of the following hardware devices to match your configuration
+-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+-        imu.initialize(parameters);
+-
+-        // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
+-        // upward (normal to the floor) using a command like the following:
+-        // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+-
+-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+-        mainCrawl = hardwareMap.get(DcMotor.class, "mainCrowl");
+-
+-
+-        motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
+-
+-        for (DcMotorEx motor : motors) {
+-            MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
+-            motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
+-            motor.setMotorType(motorConfigurationType);
+-        }
+-
+-        if (RUN_USING_ENCODER) {
+-            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+-        }
+-
+-        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+-
+-        if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
+-            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+-        }
+-
+-        // TODO: reverse any motors using DcMotor.setDirection()
+-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+-        // TODO: if desired, use setLocalizer() to change the localization method
+-        // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
+-    }
+-
+-    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
+-        return new TrajectoryBuilder(startPose, velConstraint, accelConstraint);
+-    }
+-
+-    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, boolean reversed) {
+-        return new TrajectoryBuilder(startPose, reversed, velConstraint, accelConstraint);
+-    }
+-
+-    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, double startHeading) {
+-        return new TrajectoryBuilder(startPose, startHeading, velConstraint, accelConstraint);
+-    }
+-
+-    public void turnAsync(double angle) {
+-        double heading = getPoseEstimate().getHeading();
+-
+-        lastPoseOnTurn = getPoseEstimate();
+-
+-        turnProfile = MotionProfileGenerator.generateSimpleMotionProfile(
+-                new MotionState(heading, 0, 0, 0),
+-                new MotionState(heading + angle, 0, 0, 0),
+-                MAX_ANG_VEL,
+-                MAX_ANG_ACCEL
+-        );
+-
+-        turnStart = clock.seconds();
+-        mode = Mode.TURN;
+-    }
+-
+-    public void turn(double angle) {
+-        turnAsync(angle);
+-        waitForIdle();
+-    }
+-
+-    public void followTrajectoryAsync(Trajectory trajectory) {
+-        follower.followTrajectory(trajectory);
+-        mode = Mode.FOLLOW_TRAJECTORY;
+-    }
+-
+-    public void followTrajectory(Trajectory trajectory) {
+-        followTrajectoryAsync(trajectory);
+-        waitForIdle();
+-    }
+-
+-    public Pose2d getLastError() {
+-        switch (mode) {
+-            case FOLLOW_TRAJECTORY:
+-                return follower.getLastError();
+-            case TURN:
+-                return new Pose2d(0, 0, turnController.getLastError());
+-            case IDLE:
+-                return new Pose2d();
+-        }
+-        throw new AssertionError();
+-    }
+-
+-    public void update() {
+-        updatePoseEstimate();
+-
+-        Pose2d currentPose = getPoseEstimate();
+-        Pose2d lastError = getLastError();
+-
+-        poseHistory.add(currentPose);
+-
+-        if (POSE_HISTORY_LIMIT > -1 && poseHistory.size() > POSE_HISTORY_LIMIT) {
+-            poseHistory.removeFirst();
+-        }
+-
+-        TelemetryPacket packet = new TelemetryPacket();
+-        Canvas fieldOverlay = packet.fieldOverlay();
+-
+-        packet.put("mode", mode);
+-
+-        packet.put("x", currentPose.getX());
+-        packet.put("y", currentPose.getY());
+-        packet.put("heading (deg)", Math.toDegrees(currentPose.getHeading()));
+-
+-        packet.put("xError", lastError.getX());
+-        packet.put("yError", lastError.getY());
+-        packet.put("headingError (deg)", Math.toDegrees(lastError.getHeading()));
+-
+-        switch (mode) {
+-            case IDLE:
+-                // do nothing
+-                break;
+-            case TURN: {
+-                double t = clock.seconds() - turnStart;
+-
+-                MotionState targetState = turnProfile.get(t);
+-
+-                turnController.setTargetPosition(targetState.getX());
+-
+-                double correction = turnController.update(currentPose.getHeading());
+-
+-                double targetOmega = targetState.getV();
+-                double targetAlpha = targetState.getA();
+-                setDriveSignal(new DriveSignal(new Pose2d(
+-                        0, 0, targetOmega + correction
+-                ), new Pose2d(
+-                        0, 0, targetAlpha
+-                )));
+-
+-                Pose2d newPose = lastPoseOnTurn.copy(lastPoseOnTurn.getX(), lastPoseOnTurn.getY(), targetState.getX());
+-
+-                fieldOverlay.setStroke("#4CAF50");
+-                DashboardUtil.drawRobot(fieldOverlay, newPose);
+-
+-                if (t >= turnProfile.duration()) {
+-                    mode = Mode.IDLE;
+-                    setDriveSignal(new DriveSignal());
+-                }
+-
+-                break;
+-            }
+-            case FOLLOW_TRAJECTORY: {
+-                setDriveSignal(follower.update(currentPose, getPoseVelocity()));
+-
+-                Trajectory trajectory = follower.getTrajectory();
+-
+-                fieldOverlay.setStrokeWidth(1);
+-                fieldOverlay.setStroke("#4CAF50");
+-                DashboardUtil.drawSampledPath(fieldOverlay, trajectory.getPath());
+-                double t = follower.elapsedTime();
+-                DashboardUtil.drawRobot(fieldOverlay, trajectory.get(t));
+-
+-                fieldOverlay.setStroke("#3F51B5");
+-                DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory);
+-
+-                if (!follower.isFollowing()) {
+-                    mode = Mode.IDLE;
+-                    setDriveSignal(new DriveSignal());
+-                }
+-
+-                break;
+-            }
+-        }
+-
+-        fieldOverlay.setStroke("#3F51B5");
+-        DashboardUtil.drawRobot(fieldOverlay, currentPose);
+-
+-        dashboard.sendTelemetryPacket(packet);
+-    }
+-
+-    public void waitForIdle() {
+-        while (!Thread.currentThread().isInterrupted() && isBusy()) {
+-            update();
+-        }
+-    }
+-
+-    public boolean isBusy() {
+-        return mode != Mode.IDLE;
+-    }
+-
+-    public void setMode(DcMotor.RunMode runMode) {
+-        for (DcMotorEx motor : motors) {
+-            motor.setMode(runMode);
+-        }
+-    }
+-
+-    public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
+-        for (DcMotorEx motor : motors) {
+-            motor.setZeroPowerBehavior(zeroPowerBehavior);
+-        }
+-    }
+-
+-    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
+-        PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
+-                coefficients.p, coefficients.i, coefficients.d,
+-                coefficients.f * 12 / batteryVoltageSensor.getVoltage()
+-        );
+-        for (DcMotorEx motor : motors) {
+-            motor.setPIDFCoefficients(runMode, compensatedCoefficients);
+-        }
+-    }
+-
+-    public void setWeightedDrivePower(Pose2d drivePower) {
+-        Pose2d vel = drivePower;
+-
+-        if (Math.abs(drivePower.getX()) + Math.abs(drivePower.getY())
+-                + Math.abs(drivePower.getHeading()) > 1) {
+-            // re-normalize the powers according to the weights
+-            double denom = VX_WEIGHT * Math.abs(drivePower.getX())
+-                    + VY_WEIGHT * Math.abs(drivePower.getY())
+-                    + OMEGA_WEIGHT * Math.abs(drivePower.getHeading());
+-
+-            vel = new Pose2d(
+-                    VX_WEIGHT * drivePower.getX(),
+-                    VY_WEIGHT * drivePower.getY(),
+-                    OMEGA_WEIGHT * drivePower.getHeading()
+-            ).div(denom);
+-        }
+-
+-        setDrivePower(vel);
+-    }
+-
+-    @NonNull
+-    @Override
+-    public List<Double> getWheelPositions() {
+-        List<Double> wheelPositions = new ArrayList<>();
+-        for (DcMotorEx motor : motors) {
+-            wheelPositions.add(encoderTicksToInches(motor.getCurrentPosition()));
+-        }
+-        return wheelPositions;
+-    }
+-
+-    @Override
+-    public List<Double> getWheelVelocities() {
+-        List<Double> wheelVelocities = new ArrayList<>();
+-        for (DcMotorEx motor : motors) {
+-            wheelVelocities.add(encoderTicksToInches(motor.getVelocity()));
+-        }
+-        return wheelVelocities;
+-    }
+-
+-    @Override
+-    public void setMotorPowers(double v, double v1, double v2, double v3) {
+-        leftFront.setPower(v);
+-        leftRear.setPower(v1);
+-        rightRear.setPower(v2);
+-        rightFront.setPower(v3);
+-    }
+-
+-    public void setCrowlPower(double v) {
+-        mainCrawl.setPower(v);
+-    }
+-
+-    @Override
+-    public double getRawExternalHeading() {
+-        return imu.getAngularOrientation().firstAngle;
+-    }
+-
+-    @Override
+-    public Double getExternalHeadingVelocity() {
+-        // TODO: This must be changed to match your configuration
+-        //                           | Z axis
+-        //                           |
+-        //     (Motor Port Side)     |   / X axis
+-        //                       ____|__/____
+-        //          Y axis     / *   | /    /|   (IO Side)
+-        //          _________ /______|/    //      I2C
+-        //                   /___________ //     Digital
+-        //                  |____________|/      Analog
+-        //
+-        //                 (Servo Port Side)
+-        //
+-        // The positive x axis points toward the USB port(s)
+-        //
+-        // Adjust the axis rotation rate as necessary
+-        // Rotate about the z axis is the default assuming your REV Hub/Control Hub is laying
+-        // flat on a surface
+-
+-        return (double) imu.getAngularVelocity().xRotationRate;
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackWidthTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackWidthTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/TrackWidthTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,87 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.util.Angle;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.util.MovingStatistics;
+-
+-import org.firstinspires.ftc.robotcore.internal.system.Misc;
+-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * This routine determines the effective track width. The procedure works by executing a point turn
+- * with a given angle and measuring the difference between that angle and the actual angle (as
+- * indicated by an external IMU/gyro, track wheels, or some other localizer). The quotient
+- * given angle / actual angle gives a multiplicative adjustment to the estimated track width
+- * (effective track width = estimated track width * given angle / actual angle). The routine repeats
+- * this procedure a few times and averages the values for additional accuracy. Note: a relatively
+- * accurate track width estimate is important or else the angular constraints will be thrown off.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class TrackWidthTuner extends LinearOpMode {
+-    public static double ANGLE = 180; // deg
+-    public static int NUM_TRIALS = 5;
+-    public static int DELAY = 1000; // ms
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-        // TODO: if you haven't already, set the localizer to something that doesn't depend on
+-        // drive encoders for computing the heading
+-
+-        telemetry.addLine("Press play to begin the track width tuner routine");
+-        telemetry.addLine("Make sure your robot has enough clearance to turn smoothly");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Running...");
+-        telemetry.update();
+-
+-        MovingStatistics trackWidthStats = new MovingStatistics(NUM_TRIALS);
+-        for (int i = 0; i < NUM_TRIALS; i++) {
+-            drive.setPoseEstimate(new Pose2d());
+-
+-            // it is important to handle heading wraparounds
+-            double headingAccumulator = 0;
+-            double lastHeading = 0;
+-
+-            drive.turnAsync(Math.toRadians(ANGLE));
+-
+-            while (!isStopRequested() && drive.isBusy()) {
+-                double heading = drive.getPoseEstimate().getHeading();
+-                headingAccumulator += Angle.norm(heading - lastHeading);
+-                lastHeading = heading;
+-
+-                drive.update();
+-            }
+-
+-            double trackWidth = DriveConstants.TRACK_WIDTH * Math.toRadians(ANGLE) / headingAccumulator;
+-            trackWidthStats.add(trackWidth);
+-
+-            sleep(DELAY);
+-        }
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Tuning complete");
+-        telemetry.addLine(Misc.formatInvariant("Effective track width = %.2f (SE = %.3f)",
+-                trackWidthStats.getMean(),
+-                trackWidthStats.getStandardDeviation() / Math.sqrt(NUM_TRIALS)));
+-        telemetry.update();
+-
+-        while (!isStopRequested()) {
+-            idle();
+-        }
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MotorDirectionDebugger.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MotorDirectionDebugger.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MotorDirectionDebugger.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,93 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+-
+-import org.firstinspires.ftc.robotcore.external.Telemetry;
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/**
+- * This is a simple teleop routine for debugging your motor configuration.
+- * Pressing each of the buttons will power its respective motor.
+- *
+- * Button Mappings:
+- *
+- * Xbox/PS4 Button - Motor
+- *   X / ▢         - Front Left
+- *   Y / Δ         - Front Right
+- *   B / O         - Rear  Right
+- *   A / X         - Rear  Left
+- *                                    The buttons are mapped to match the wheels spatially if you
+- *                                    were to rotate the gamepad 45deg°. x/square is the front left
+- *                    ________        and each button corresponds to the wheel as you go clockwise
+- *                   / ______ \
+- *     ------------.-'   _  '-..+              Front of Bot
+- *              /   _  ( Y )  _  \                  ^
+- *             |  ( X )  _  ( B ) |     Front Left   \    Front Right
+- *        ___  '.      ( A )     /|       Wheel       \      Wheel
+- *      .'    '.    '-._____.-'  .'       (x/▢)        \     (Y/Δ)
+- *     |       |                 |                      \
+- *      '.___.' '.               |          Rear Left    \   Rear Right
+- *               '.             /             Wheel       \    Wheel
+- *                \.          .'              (A/X)        \   (B/O)
+- *                  \________/
+- *
+- * Uncomment the @Disabled tag below to use this opmode.
+- */
+-@Disabled
+-@Config
+-@TeleOp(group = "drive")
+-public class MotorDirectionDebugger extends LinearOpMode {
+-    public static double MOTOR_POWER = 0.7;
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        telemetry.addLine("Press play to begin the debugging opmode");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        telemetry.clearAll();
+-        telemetry.setDisplayFormat(Telemetry.DisplayFormat.HTML);
+-
+-        while (!isStopRequested()) {
+-            telemetry.addLine("Press each button to turn on its respective motor");
+-            telemetry.addLine();
+-            telemetry.addLine("<font face=\"monospace\">Xbox/PS4 Button - Motor</font>");
+-            telemetry.addLine("<font face=\"monospace\">&nbsp;&nbsp;X / ▢&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Front Left</font>");
+-            telemetry.addLine("<font face=\"monospace\">&nbsp;&nbsp;Y / Δ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Front Right</font>");
+-            telemetry.addLine("<font face=\"monospace\">&nbsp;&nbsp;B / O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Rear&nbsp;&nbsp;Right</font>");
+-            telemetry.addLine("<font face=\"monospace\">&nbsp;&nbsp;A / X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Rear&nbsp;&nbsp;Left</font>");
+-            telemetry.addLine();
+-
+-            if(gamepad1.x) {
+-                drive.setMotorPowers(MOTOR_POWER, 0, 0, 0);
+-                telemetry.addLine("Running Motor: Front Left");
+-            } else if(gamepad1.y) {
+-                drive.setMotorPowers(0, 0, 0, MOTOR_POWER);
+-                telemetry.addLine("Running Motor: Front Right");
+-            } else if(gamepad1.b) {
+-                drive.setMotorPowers(0, 0, MOTOR_POWER, 0);
+-                telemetry.addLine("Running Motor: Rear Right");
+-            } else if(gamepad1.a) {
+-                drive.setMotorPowers(0, MOTOR_POWER, 0, 0);
+-                telemetry.addLine("Running Motor: Rear Left");
+-            } else {
+-                drive.setMotorPowers(0, 0, 0, 0);
+-                telemetry.addLine("Running Motor: None");
+-            }
+-
+-            telemetry.update();
+-        }
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/ManualFeedforwardTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/ManualFeedforwardTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/ManualFeedforwardTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,146 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.kinematics.Kinematics;
+-import com.acmerobotics.roadrunner.profile.MotionProfile;
+-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+-import com.acmerobotics.roadrunner.profile.MotionState;
+-import com.acmerobotics.roadrunner.util.NanoClock;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.util.RobotLog;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-import java.util.Objects;
+-
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+-
+-/*
+- * This routine is designed to tune the open-loop feedforward coefficients. Although it may seem unnecessary,
+- * tuning these coefficients is just as important as the positional parameters. Like the other
+- * manual tuning routines, this op mode relies heavily upon the dashboard. To access the dashboard,
+- * connect your computer to the RC's WiFi network. In your browser, navigate to
+- * https://192.168.49.1:8080/dash if you're using the RC phone or https://192.168.43.1:8080/dash if
+- * you are using the Control Hub. Once you've successfully connected, start the program, and your
+- * robot will begin moving forward and backward according to a motion profile. Your job is to graph
+- * the velocity errors over time and adjust the feedforward coefficients. Once you've found a
+- * satisfactory set of gains, add them to the appropriate fields in the DriveConstants.java file.
+- *
+- * Pressing Y/Δ (Xbox/PS4) will pause the tuning process and enter driver override, allowing the
+- * user to reset the position of the bot in the event that it drifts off the path.
+- * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class ManualFeedforwardTuner extends LinearOpMode {
+-    public static double DISTANCE = 72; // in
+-
+-    private FtcDashboard dashboard = FtcDashboard.getInstance();
+-
+-    private SampleMecanumDrive drive;
+-
+-    enum Mode {
+-        DRIVER_MODE,
+-        TUNING_MODE
+-    }
+-
+-    private Mode mode;
+-
+-    private static MotionProfile generateProfile(boolean movingForward) {
+-        MotionState start = new MotionState(movingForward ? 0 : DISTANCE, 0, 0, 0);
+-        MotionState goal = new MotionState(movingForward ? DISTANCE : 0, 0, 0, 0);
+-        return MotionProfileGenerator.generateSimpleMotionProfile(start, goal, MAX_VEL, MAX_ACCEL);
+-    }
+-
+-    @Override
+-    public void runOpMode() {
+-        if (RUN_USING_ENCODER) {
+-            RobotLog.setGlobalErrorMsg("Feedforward constants usually don't need to be tuned " +
+-                    "when using the built-in drive motor velocity PID.");
+-        }
+-
+-        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+-
+-        drive = new SampleMecanumDrive(hardwareMap);
+-
+-        mode = Mode.TUNING_MODE;
+-
+-        NanoClock clock = NanoClock.system();
+-
+-        telemetry.addLine("Ready!");
+-        telemetry.update();
+-        telemetry.clearAll();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        boolean movingForwards = true;
+-        MotionProfile activeProfile = generateProfile(true);
+-        double profileStart = clock.seconds();
+-
+-
+-        while (!isStopRequested()) {
+-            telemetry.addData("mode", mode);
+-
+-            switch (mode) {
+-                case TUNING_MODE:
+-                    if (gamepad1.y) {
+-                        mode = Mode.DRIVER_MODE;
+-                    }
+-
+-                    // calculate and set the motor power
+-                    double profileTime = clock.seconds() - profileStart;
+-
+-                    if (profileTime > activeProfile.duration()) {
+-                        // generate a new profile
+-                        movingForwards = !movingForwards;
+-                        activeProfile = generateProfile(movingForwards);
+-                        profileStart = clock.seconds();
+-                    }
+-
+-                    MotionState motionState = activeProfile.get(profileTime);
+-                    double targetPower = Kinematics.calculateMotorFeedforward(motionState.getV(), motionState.getA(), kV, kA, kStatic);
+-
+-                    drive.setDrivePower(new Pose2d(targetPower, 0, 0));
+-                    drive.updatePoseEstimate();
+-
+-                    Pose2d poseVelo = Objects.requireNonNull(drive.getPoseVelocity(), "poseVelocity() must not be null. Ensure that the getWheelVelocities() method has been overridden in your localizer.");
+-                    double currentVelo = poseVelo.getX();
+-
+-                    // update telemetry
+-                    telemetry.addData("targetVelocity", motionState.getV());
+-                    telemetry.addData("measuredVelocity", currentVelo);
+-                    telemetry.addData("error", motionState.getV() - currentVelo);
+-                    break;
+-                case DRIVER_MODE:
+-                    if (gamepad1.b) {
+-                        mode = Mode.TUNING_MODE;
+-                        movingForwards = true;
+-                        activeProfile = generateProfile(movingForwards);
+-                        profileStart = clock.seconds();
+-                    }
+-
+-                    drive.setWeightedDrivePower(
+-                            new Pose2d(
+-                                    -gamepad1.left_stick_y,
+-                                    -gamepad1.left_stick_x,
+-                                    -gamepad1.right_stick_x
+-                            )
+-                    );
+-                    break;
+-            }
+-
+-            telemetry.update();
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/DriveVelocityPIDTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/DriveVelocityPIDTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/DriveVelocityPIDTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,170 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.profile.MotionProfile;
+-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+-import com.acmerobotics.roadrunner.profile.MotionState;
+-import com.acmerobotics.roadrunner.util.NanoClock;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.util.RobotLog;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-import java.util.List;
+-
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+-
+-/*
+- * This routine is designed to tune the PID coefficients used by the REV Expansion Hubs for closed-
+- * loop velocity control. Although it may seem unnecessary, tuning these coefficients is just as
+- * important as the positional parameters. Like the other manual tuning routines, this op mode
+- * relies heavily upon the dashboard. To access the dashboard, connect your computer to the RC's
+- * WiFi network. In your browser, navigate to https://192.168.49.1:8080/dash if you're using the RC
+- * phone or https://192.168.43.1:8080/dash if you are using the Control Hub. Once you've successfully
+- * connected, start the program, and your robot will begin moving forward and backward according to
+- * a motion profile. Your job is to graph the velocity errors over time and adjust the PID
+- * coefficients (note: the tuning variable will not appear until the op mode finishes initializing).
+- * Once you've found a satisfactory set of gains, add them to the DriveConstants.java file under the
+- * MOTOR_VELO_PID field.
+- *
+- * Recommended tuning process:
+- *
+- * 1. Increase kP until any phase lag is eliminated. Concurrently increase kD as necessary to
+- *    mitigate oscillations.
+- * 2. Add kI (or adjust kF) until the steady state/constant velocity plateaus are reached.
+- * 3. Back off kP and kD a little until the response is less oscillatory (but without lag).
+- *
+- * Pressing Y/Δ (Xbox/PS4) will pause the tuning process and enter driver override, allowing the
+- * user to reset the position of the bot in the event that it drifts off the path.
+- * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class DriveVelocityPIDTuner extends LinearOpMode {
+-    public static double DISTANCE = 72; // in
+-
+-    enum Mode {
+-        DRIVER_MODE,
+-        TUNING_MODE
+-    }
+-
+-    private static MotionProfile generateProfile(boolean movingForward) {
+-        MotionState start = new MotionState(movingForward ? 0 : DISTANCE, 0, 0, 0);
+-        MotionState goal = new MotionState(movingForward ? DISTANCE : 0, 0, 0, 0);
+-        return MotionProfileGenerator.generateSimpleMotionProfile(start, goal, MAX_VEL, MAX_ACCEL);
+-    }
+-
+-    @Override
+-    public void runOpMode() {
+-        if (!RUN_USING_ENCODER) {
+-            RobotLog.setGlobalErrorMsg("%s does not need to be run if the built-in motor velocity" +
+-                    "PID is not in use", getClass().getSimpleName());
+-        }
+-
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        Mode mode = Mode.TUNING_MODE;
+-
+-        double lastKp = MOTOR_VELO_PID.p;
+-        double lastKi = MOTOR_VELO_PID.i;
+-        double lastKd = MOTOR_VELO_PID.d;
+-        double lastKf = MOTOR_VELO_PID.f;
+-
+-        drive.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+-
+-        NanoClock clock = NanoClock.system();
+-
+-        telemetry.addLine("Ready!");
+-        telemetry.update();
+-        telemetry.clearAll();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        boolean movingForwards = true;
+-        MotionProfile activeProfile = generateProfile(true);
+-        double profileStart = clock.seconds();
+-
+-
+-        while (!isStopRequested()) {
+-            telemetry.addData("mode", mode);
+-
+-            switch (mode) {
+-                case TUNING_MODE:
+-                    if (gamepad1.y) {
+-                        mode = Mode.DRIVER_MODE;
+-                        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+-                    }
+-
+-                    // calculate and set the motor power
+-                    double profileTime = clock.seconds() - profileStart;
+-
+-                    if (profileTime > activeProfile.duration()) {
+-                        // generate a new profile
+-                        movingForwards = !movingForwards;
+-                        activeProfile = generateProfile(movingForwards);
+-                        profileStart = clock.seconds();
+-                    }
+-
+-                    MotionState motionState = activeProfile.get(profileTime);
+-                    double targetPower = kV * motionState.getV();
+-                    drive.setDrivePower(new Pose2d(targetPower, 0, 0));
+-
+-                    List<Double> velocities = drive.getWheelVelocities();
+-
+-                    // update telemetry
+-                    telemetry.addData("targetVelocity", motionState.getV());
+-                    for (int i = 0; i < velocities.size(); i++) {
+-                        telemetry.addData("measuredVelocity" + i, velocities.get(i));
+-                        telemetry.addData(
+-                                "error" + i,
+-                                motionState.getV() - velocities.get(i)
+-                        );
+-                    }
+-                    break;
+-                case DRIVER_MODE:
+-                    if (gamepad1.b) {
+-                        drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+-
+-                        mode = Mode.TUNING_MODE;
+-                        movingForwards = true;
+-                        activeProfile = generateProfile(movingForwards);
+-                        profileStart = clock.seconds();
+-                    }
+-
+-                    drive.setWeightedDrivePower(
+-                            new Pose2d(
+-                                    -gamepad1.left_stick_y,
+-                                    -gamepad1.left_stick_x,
+-                                    -gamepad1.right_stick_x
+-                            )
+-                    );
+-                    break;
+-            }
+-
+-            if (lastKp != MOTOR_VELO_PID.p || lastKd != MOTOR_VELO_PID.d
+-                    || lastKi != MOTOR_VELO_PID.i || lastKf != MOTOR_VELO_PID.f) {
+-                drive.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+-
+-                lastKp = MOTOR_VELO_PID.p;
+-                lastKi = MOTOR_VELO_PID.i;
+-                lastKd = MOTOR_VELO_PID.d;
+-                lastKf = MOTOR_VELO_PID.f;
+-            }
+-
+-            telemetry.update();
+-        }
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RedAutonomous4ringsRR.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RedAutonomous4ringsRR.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RedAutonomous4ringsRR.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,189 +0,0 @@
+-package org.firstinspires.ftc.teamcode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.geometry.Vector2d;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.acmerobotics.dashboard.config.Config;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-
+-@Config
+-@Autonomous(group = "drive")
+-public class RedAutonomous4ringsRR extends LinearOpMode {
+-
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d(-48, -48, 0))
+-                .lineTo(new Vector2d(-5, -60))
+-                .addTemporalMarker(2, () -> {})
+-                .build();
+-        Trajectory traj2 = drive.trajectoryBuilder(trajectory.end())
+-                .lineToLinearHeading(new Pose2d(-48, -48, Math.toRadians(90)))
+-                .build();
+-
+-        Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
+-
+-                .lineToLinearHeading(new Pose2d(-53, -38, Math.toRadians(90)))
+-                .addTemporalMarker(0.5, () -> {
+-                    drive.setCrowlPower(0.3);
+-                })
+-                .addTemporalMarker(0.5, () -> {
+-                    drive.setCrowlPower(0);
+-                })
+-                .build();
+-
+-        Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
+-                .lineToLinearHeading(new Pose2d(-48, -48, Math.toRadians(90)))
+-                .build();
+-
+-        Trajectory traj5 = drive.trajectoryBuilder(traj4.end())
+-                .lineToLinearHeading(new Pose2d(-5, -60, 0))
+-                .build();
+-        Trajectory traj6 = drive.trajectoryBuilder(traj5.end())
+-                .strafeLeft(10)
+-                .addTemporalMarker(2, () -> {})
+-                .build();
+-        Trajectory traj7 = drive.trajectoryBuilder(traj6.end())
+-                .strafeTo(new Vector2d(0, -35))
+-                .addTemporalMarker(2, () -> {
+-                    drive.turn(Math.toRadians(-8));
+-                })
+-                .addTemporalMarker(2, () -> {
+-                    drive.turn(Math.toRadians(-8));
+-                })
+-                .addTemporalMarker(2, () -> {
+-                    drive.turn(Math.toRadians(-8));
+-                })
+-                .addTemporalMarker(2, () -> {
+-                    drive.turn(Math.toRadians(24));
+-                })
+-                .build();
+-        Trajectory traj8 = drive.trajectoryBuilder(traj7.end())
+-                .back(15)
+-                .build();
+-        Trajectory traj9 = drive.trajectoryBuilder(traj8.end())
+-                .forward(15)
+-                .addTemporalMarker(6, () -> {})
+-                .build();
+-        Trajectory traj10 = drive.trajectoryBuilder(traj9.end())
+-                .back(20)
+-                .build();
+-        Trajectory traj11 = drive.trajectoryBuilder(traj10.end())
+-                .forward(20)
+-                .addTemporalMarker(4, () -> {})
+-                .build();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        drive.followTrajectory(trajectory);
+-        drive.followTrajectory(traj2);
+-        drive.followTrajectory(traj3);
+-        drive.followTrajectory(traj4);
+-
+-        drive.followTrajectory(traj5);
+-        drive.followTrajectory(traj6);
+-        drive.followTrajectory(traj7);
+-
+-        drive.followTrajectory(traj8);
+-        drive.followTrajectory(traj9);
+-        drive.followTrajectory(traj10);
+-        drive.followTrajectory(traj11);
+-
+-
+-        //Pose2d poseEstimate = drive.getPoseEstimate();
+-        //telemetry.addData("finalX", poseEstimate.getX());
+-        //telemetry.addData("finalY", poseEstimate.getY());
+-        //telemetry.addData("finalHeading", poseEstimate.getHeading());
+-        //telemetry.update();
+-
+-        while (!isStopRequested() && opModeIsActive()) ;
+-    }
+-
+-
+-    /*
+-    @Override
+-
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-        Pose2d startPose = new Pose2d(-48, -48, 0);
+-
+-
+-        Trajectory traj1 = drive.trajectoryBuilder(startPose)
+-                .lineTo(new Vector2d(-5, -60))
+-                .addTemporalMarker(2, () -> {})
+-                .build();
+-        Trajectory traj2 = drive.trajectoryBuilder(traj1.end())
+-                .lineToLinearHeading(new Pose2d(-48, -48, Math.toRadians(90)))
+-                .build();
+-        Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
+-                .lineToLinearHeading(new Pose2d(-53, -38, Math.toRadians(90)))
+-                .addTemporalMarker(2, () -> {})
+-                .build();
+-        Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
+-                .lineToLinearHeading(new Pose2d(-53, -38, Math.toRadians(90)))
+-                .build();
+-        Trajectory traj5 = drive.trajectoryBuilder(traj4.end())
+-                .lineToLinearHeading(new Pose2d(-5, -60, 0))
+-                .build();
+-        Trajectory traj6 = drive.trajectoryBuilder(traj5.end())
+-                .strafeLeft(10)
+-                .build();
+-        Trajectory traj7 = drive.trajectoryBuilder(traj6.end())
+-                .strafeTo(new Vector2d(0, -35))
+-                .build();
+-        Trajectory traj8 = drive.trajectoryBuilder(traj7.end())
+-                .back(15)
+-                .build();
+-        Trajectory traj9 = drive.trajectoryBuilder(traj8.end())
+-                .forward(15)
+-                .build();
+-        Trajectory traj10 = drive.trajectoryBuilder(traj9.end())
+-                .back(20)
+-                .build();
+-        Trajectory traj11 = drive.trajectoryBuilder(traj10.end())
+-                .forward(20)
+-                .build();
+-
+-
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        drive.followTrajectory(traj1);
+-        drive.followTrajectory(traj2);
+-        drive.followTrajectory(traj3);
+-        drive.followTrajectory(traj4);
+-        drive.followTrajectory(traj5);
+-        drive.followTrajectory(traj6);
+-        drive.followTrajectory(traj7);
+-        drive.followTrajectory(traj8);
+-        drive.followTrajectory(traj9);
+-        drive.followTrajectory(traj10);
+-        drive.followTrajectory(traj11);
+-        Pose2d poseEstimate = drive.getPoseEstimate();
+-
+-        while (opModeIsActive() && !isStopRequested()) ;
+-
+-        //drive.turn(-5);
+-        //sleep(2000);
+-        //drive.turn(-5);
+-        //sleep(2000);
+-        //drive.turn(-5);
+-        //sleep(2000);
+-        //drive.turn(15);
+-
+-
+-    }*/
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/StrafeTest.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/StrafeTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/StrafeTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,45 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * This is a simple routine to test translational drive capabilities.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class StrafeTest extends LinearOpMode {
+-    public static double DISTANCE = 60; // in
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
+-                .strafeRight(DISTANCE)
+-                .build();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        drive.followTrajectory(trajectory);
+-
+-        Pose2d poseEstimate = drive.getPoseEstimate();
+-        telemetry.addData("finalX", poseEstimate.getX());
+-        telemetry.addData("finalY", poseEstimate.getY());
+-        telemetry.addData("finalHeading", poseEstimate.getHeading());
+-        telemetry.update();
+-
+-        while (!isStopRequested() && opModeIsActive()) ;
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/SplineTest.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/SplineTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/SplineTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,38 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.geometry.Vector2d;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * This is an example of a more complex path to really test the tuning.
+- */
+-@Autonomous(group = "drive")
+-public class SplineTest extends LinearOpMode {
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        Trajectory traj = drive.trajectoryBuilder(new Pose2d())
+-                .splineTo(new Vector2d(30, 30), 0)
+-                .build();
+-
+-        drive.followTrajectory(traj);
+-
+-        sleep(2000);
+-
+-        drive.followTrajectory(
+-                drive.trajectoryBuilder(traj.end(), true)
+-                        .splineTo(new Vector2d(0, 0), Math.toRadians(180))
+-                        .build()
+-        );
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/StraightTest.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/StraightTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/StraightTest.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,45 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-/*
+- * This is a simple routine to test translational drive capabilities.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class StraightTest extends LinearOpMode {
+-    public static double DISTANCE = 60; // in
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
+-                .forward(DISTANCE)
+-                .build();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        drive.followTrajectory(trajectory);
+-
+-        Pose2d poseEstimate = drive.getPoseEstimate();
+-        telemetry.addData("finalX", poseEstimate.getX());
+-        telemetry.addData("finalY", poseEstimate.getY());
+-        telemetry.addData("finalHeading", poseEstimate.getHeading());
+-        telemetry.update();
+-
+-        while (!isStopRequested() && opModeIsActive()) ;
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MaxVelocityTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MaxVelocityTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/MaxVelocityTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,82 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.hardware.VoltageSensor;
+-import com.qualcomm.robotcore.util.ElapsedTime;
+-
+-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-import java.util.Objects;
+-
+-/**
+- * This routine is designed to calculate the maximum velocity your bot can achieve under load. It
+- * will also calculate the effective kF value for your velocity PID.
+- * <p>
+- * Upon pressing start, your bot will run at max power for RUNTIME seconds.
+- * <p>
+- * Further fine tuning of kF may be desired.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class MaxVelocityTuner extends LinearOpMode {
+-    public static double RUNTIME = 2.0;
+-
+-    private ElapsedTime timer;
+-    private double maxVelocity = 0.0;
+-
+-    private VoltageSensor batteryVoltageSensor;
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+-
+-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+-
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        telemetry.addLine("Your bot will go at full speed for " + RUNTIME + " seconds.");
+-        telemetry.addLine("Please ensure you have enough space cleared.");
+-        telemetry.addLine("");
+-        telemetry.addLine("Press start when ready.");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        telemetry.clearAll();
+-        telemetry.update();
+-
+-        drive.setDrivePower(new Pose2d(1, 0, 0));
+-        timer = new ElapsedTime();
+-
+-        while (!isStopRequested() && timer.seconds() < RUNTIME) {
+-            drive.updatePoseEstimate();
+-
+-            Pose2d poseVelo = Objects.requireNonNull(drive.getPoseVelocity(), "poseVelocity() must not be null. Ensure that the getWheelVelocities() method has been overridden in your localizer.");
+-
+-            maxVelocity = Math.max(poseVelo.vec().norm(), maxVelocity);
+-        }
+-
+-        drive.setDrivePower(new Pose2d());
+-
+-        double effectiveKf = DriveConstants.getMotorVelocityF(veloInchesToTicks(maxVelocity));
+-
+-        telemetry.addData("Max Velocity", maxVelocity);
+-        telemetry.addData("Voltage Compensated kF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
+-        telemetry.update();
+-
+-        while (!isStopRequested() && opModeIsActive()) idle();
+-    }
+-
+-    private double veloInchesToTicks(double inchesPerSec) {
+-        return inchesPerSec / (2 * Math.PI * DriveConstants.WHEEL_RADIUS) / DriveConstants.GEAR_RATIO * DriveConstants.TICKS_PER_REV;
+-    }
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/AutomaticFeedforwardTuner.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/AutomaticFeedforwardTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/opmode/AutomaticFeedforwardTuner.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,220 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive.opmode;
+-
+-import com.acmerobotics.dashboard.FtcDashboard;
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.acmerobotics.roadrunner.util.NanoClock;
+-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.util.RobotLog;
+-
+-import org.firstinspires.ftc.robotcore.internal.system.Misc;
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-import org.firstinspires.ftc.teamcode.util.LoggingUtil;
+-import org.firstinspires.ftc.teamcode.util.RegressionUtil;
+-
+-import java.util.ArrayList;
+-import java.util.List;
+-
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_RPM;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
+-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.rpmToVelocity;
+-
+-/*
+- * Op mode for computing kV, kStatic, and kA from various drive routines. For the curious, here's an
+- * outline of the procedure:
+- *   1. Slowly ramp the motor power and record encoder values along the way.
+- *   2. Run a linear regression on the encoder velocity vs. motor power plot to obtain a slope (kV)
+- *      and an optional intercept (kStatic).
+- *   3. Accelerate the robot (apply constant power) and record the encoder counts.
+- *   4. Adjust the encoder data based on the velocity tuning data and find kA with another linear
+- *      regression.
+- */
+-@Config
+-@Autonomous(group = "drive")
+-public class AutomaticFeedforwardTuner extends LinearOpMode {
+-    public static double MAX_POWER = 0.7;
+-    public static double DISTANCE = 100; // in
+-
+-    @Override
+-    public void runOpMode() throws InterruptedException {
+-        if (RUN_USING_ENCODER) {
+-            RobotLog.setGlobalErrorMsg("Feedforward constants usually don't need to be tuned " +
+-                    "when using the built-in drive motor velocity PID.");
+-        }
+-
+-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+-
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-
+-        NanoClock clock = NanoClock.system();
+-
+-        telemetry.addLine("Press play to begin the feedforward tuning routine");
+-        telemetry.update();
+-
+-        waitForStart();
+-
+-        if (isStopRequested()) return;
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Would you like to fit kStatic?");
+-        telemetry.addLine("Press (Y/Δ) for yes, (B/O) for no");
+-        telemetry.update();
+-
+-        boolean fitIntercept = false;
+-        while (!isStopRequested()) {
+-            if (gamepad1.y) {
+-                fitIntercept = true;
+-                while (!isStopRequested() && gamepad1.y) {
+-                    idle();
+-                }
+-                break;
+-            } else if (gamepad1.b) {
+-                while (!isStopRequested() && gamepad1.b) {
+-                    idle();
+-                }
+-                break;
+-            }
+-            idle();
+-        }
+-
+-        telemetry.clearAll();
+-        telemetry.addLine(Misc.formatInvariant(
+-                "Place your robot on the field with at least %.2f in of room in front", DISTANCE));
+-        telemetry.addLine("Press (Y/Δ) to begin");
+-        telemetry.update();
+-
+-        while (!isStopRequested() && !gamepad1.y) {
+-            idle();
+-        }
+-        while (!isStopRequested() && gamepad1.y) {
+-            idle();
+-        }
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Running...");
+-        telemetry.update();
+-
+-        double maxVel = rpmToVelocity(MAX_RPM);
+-        double finalVel = MAX_POWER * maxVel;
+-        double accel = (finalVel * finalVel) / (2.0 * DISTANCE);
+-        double rampTime = Math.sqrt(2.0 * DISTANCE / accel);
+-
+-        List<Double> timeSamples = new ArrayList<>();
+-        List<Double> positionSamples = new ArrayList<>();
+-        List<Double> powerSamples = new ArrayList<>();
+-
+-        drive.setPoseEstimate(new Pose2d());
+-
+-        double startTime = clock.seconds();
+-        while (!isStopRequested()) {
+-            double elapsedTime = clock.seconds() - startTime;
+-            if (elapsedTime > rampTime) {
+-                break;
+-            }
+-            double vel = accel * elapsedTime;
+-            double power = vel / maxVel;
+-
+-            timeSamples.add(elapsedTime);
+-            positionSamples.add(drive.getPoseEstimate().getX());
+-            powerSamples.add(power);
+-
+-            drive.setDrivePower(new Pose2d(power, 0.0, 0.0));
+-            drive.updatePoseEstimate();
+-        }
+-        drive.setDrivePower(new Pose2d(0.0, 0.0, 0.0));
+-
+-        RegressionUtil.RampResult rampResult = RegressionUtil.fitRampData(
+-                timeSamples, positionSamples, powerSamples, fitIntercept,
+-                LoggingUtil.getLogFile(Misc.formatInvariant(
+-                        "DriveRampRegression-%d.csv", System.currentTimeMillis())));
+-
+-        telemetry.clearAll();
+-        telemetry.addLine("Quasi-static ramp up test complete");
+-        if (fitIntercept) {
+-            telemetry.addLine(Misc.formatInvariant("kV = %.5f, kStatic = %.5f (R^2 = %.2f)",
+-                    rampResult.kV, rampResult.kStatic, rampResult.rSquare));
+-        } else {
+-            telemetry.addLine(Misc.formatInvariant("kV = %.5f (R^2 = %.2f)",
+-                    rampResult.kStatic, rampResult.rSquare));
+-        }
+-        telemetry.addLine("Would you like to fit kA?");
+-        telemetry.addLine("Press (Y/Δ) for yes, (B/O) for no");
+-        telemetry.update();
+-
+-        boolean fitAccelFF = false;
+-        while (!isStopRequested()) {
+-            if (gamepad1.y) {
+-                fitAccelFF = true;
+-                while (!isStopRequested() && gamepad1.y) {
+-                    idle();
+-                }
+-                break;
+-            } else if (gamepad1.b) {
+-                while (!isStopRequested() && gamepad1.b) {
+-                    idle();
+-                }
+-                break;
+-            }
+-            idle();
+-        }
+-
+-        if (fitAccelFF) {
+-            telemetry.clearAll();
+-            telemetry.addLine("Place the robot back in its starting position");
+-            telemetry.addLine("Press (Y/Δ) to continue");
+-            telemetry.update();
+-
+-            while (!isStopRequested() && !gamepad1.y) {
+-                idle();
+-            }
+-            while (!isStopRequested() && gamepad1.y) {
+-                idle();
+-            }
+-
+-            telemetry.clearAll();
+-            telemetry.addLine("Running...");
+-            telemetry.update();
+-
+-            double maxPowerTime = DISTANCE / maxVel;
+-
+-            timeSamples.clear();
+-            positionSamples.clear();
+-            powerSamples.clear();
+-
+-            drive.setPoseEstimate(new Pose2d());
+-            drive.setDrivePower(new Pose2d(MAX_POWER, 0.0, 0.0));
+-
+-            startTime = clock.seconds();
+-            while (!isStopRequested()) {
+-                double elapsedTime = clock.seconds() - startTime;
+-                if (elapsedTime > maxPowerTime) {
+-                    break;
+-                }
+-
+-                timeSamples.add(elapsedTime);
+-                positionSamples.add(drive.getPoseEstimate().getX());
+-                powerSamples.add(MAX_POWER);
+-
+-                drive.updatePoseEstimate();
+-            }
+-            drive.setDrivePower(new Pose2d(0.0, 0.0, 0.0));
+-
+-            RegressionUtil.AccelResult accelResult = RegressionUtil.fitAccelData(
+-                    timeSamples, positionSamples, powerSamples, rampResult,
+-                    LoggingUtil.getLogFile(Misc.formatInvariant(
+-                            "DriveAccelRegression-%d.csv", System.currentTimeMillis())));
+-
+-            telemetry.clearAll();
+-            telemetry.addLine("Constant power test complete");
+-            telemetry.addLine(Misc.formatInvariant("kA = %.5f (R^2 = %.2f)",
+-                    accelResult.kA, accelResult.rSquare));
+-            telemetry.update();
+-        }
+-
+-        while (!isStopRequested()) {
+-            idle();
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/DriveConstants.java
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/DriveConstants.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/DriveConstants.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,108 +0,0 @@
+-package org.firstinspires.ftc.teamcode.drive;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+-
+-/*
+- * Constants shared between multiple drive types.
+- *
+- * Constants generated by LearnRoadRunner.com/drive-constants
+- *
+- * TODO: Tune or adjust the following constants to fit your robot. Note that the non-final
+- * fields may also be edited through the dashboard (connect to the robot's WiFi network and
+- * navigate to https://192.168.49.1:8080/dash). Make sure to save the values here after you
+- * adjust them in the dashboard; **config variable changes don't persist between app restarts**.
+- *
+- * These are not the only parameters; some are located in the localizer classes, drive base classes,
+- * and op modes themselves.
+- */
+-@Config
+-public class DriveConstants {
+-
+-    /*
+-     * These are motor constants that should be listed online for your motors.
+-     */
+-    public static final double TICKS_PER_REV = 1120;
+-    public static final double MAX_RPM = 160;
+-
+-    /*
+-     * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
+-     * Set this flag to false if drive encoders are not present and an alternative localization
+-     * method is in use (e.g., tracking wheels).
+-     *
+-     * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
+-     * from DriveVelocityPIDTuner.
+-     */
+-    public static final boolean RUN_USING_ENCODER = true;
+-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(6, 3, 4,
+-            12.152056175952401);
+-
+-    /*
+-     * These are physical constants that can be determined from your robot (including the track
+-     * width; it will be tune empirically later although a rough estimate is important). Users are
+-     * free to chose whichever linear distance unit they would like so long as it is consistently
+-     * used. The default values were selected with inches in mind. Road runner uses radians for
+-     * angular distances although most angular parameters are wrapped in Math.toRadians() for
+-     * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
+-     */
+-    public static double WHEEL_RADIUS = 1.4763; // in
+-    public static double GEAR_RATIO = 2; // output (wheel) speed / input (motor) speed
+-    public static double TRACK_WIDTH = 14.9606; // in
+-
+-    /*
+-     * These are the feedforward parameters used to model the drive motor behavior. If you are using
+-     * the built-in velocity PID, *these values are fine as is*. However, if you do not have drive
+-     * motor encoders or have elected not to use them for velocity control, these values should be
+-     * empirically tuned.
+-     */
+-    public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
+-    public static double kA = 0;
+-    public static double kStatic = 0;
+-
+-    /*
+-     * These values are used to generate the trajectories for you robot. To ensure proper operation,
+-     * the constraints should never exceed ~80% of the robot's actual capabilities. While Road
+-     * Runner is designed to enable faster autonomous motion, it is a good idea for testing to start
+-     * small and gradually increase them later after everything is working. All distance units are
+-     * inches.
+-     */
+-    /*
+-     * Note from LearnRoadRunner.com:
+-     * The velocity and acceleration constraints were calculated based on the following equation:
+-     * ((MAX_RPM / 60) * GEAR_RATIO * WHEEL_RADIUS * 2 * Math.PI) * 0.85
+-     * Resulting in 42.050594659417804 in/s.
+-     * This is only 85% of the theoretical maximum velocity of the bot, following the recommendation above.
+-     * This is capped at 85% because there are a number of variables that will prevent your bot from actually
+-     * reaching this maximum velocity: voltage dropping over the game, bot weight, general mechanical inefficiencies, etc.
+-     * However, you can push this higher yourself if you'd like. Perhaps raise it to 90-95% of the theoretically 
+-     * max velocity. The theoretically maximum velocity is 49.471287834609186 in/s.
+-     * Just make sure that your bot can actually reach this maximum velocity. Path following will be detrimentally
+-     * affected if it is aiming for a velocity not actually possible.
+-     * 
+-     * The maximum acceleration is somewhat arbitrary and it is recommended that you tweak this yourself based on
+-     * actual testing. Just set it at a reasonable value and keep increasing until your path following starts
+-     * to degrade. As of now, it simply mirrors the velocity, resulting in 42.050594659417804 in/s/s
+-     *
+-     * Maximum Angular Velocity is calculated as: maximum velocity / trackWidth * (180 / Math.PI) but capped at 360°/s.
+-     * You are free to raise this on your own if you would like. It is best determined through experimentation.
+-     
+-     */
+-    public static double MAX_VEL = 42.050594659417804;
+-    public static double MAX_ACCEL = 42.050594659417804;
+-    public static double MAX_ANG_VEL = 5;
+-    public static double MAX_ANG_ACCEL = 5;
+-
+-
+-    public static double encoderTicksToInches(double ticks) {
+-        return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
+-    }
+-
+-    public static double rpmToVelocity(double rpm) {
+-        return rpm * GEAR_RATIO * 2 * Math.PI * WHEEL_RADIUS / 60.0;
+-    }
+-
+-    public static double getMotorVelocityF(double ticksPerSecond) {
+-      // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
+-      return 32767 / ticksPerSecond;
+-    }
+-}
+\ No newline at end of file
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ToShoot.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ToShoot.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ToShoot.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
+@@ -1,107 +0,0 @@
+-package org.firstinspires.ftc.teamcode;
+-
+-import com.acmerobotics.dashboard.config.Config;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+-import com.acmerobotics.roadrunner.geometry.Pose2d;
+-import com.qualcomm.hardware.lynx.LynxModule;
+-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+-import com.qualcomm.robotcore.hardware.DcMotor;
+-import com.qualcomm.robotcore.hardware.DcMotorEx;
+-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+-import com.qualcomm.robotcore.hardware.HardwareMap;
+-
+-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+-
+-import java.util.Vector;
+-
+-@Config
+-@TeleOp(group = "drive")
+-public class ToShoot extends LinearOpMode {
+-    public void runOpMode() {
+-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+-        Robot robot = new Robot(hardwareMap);
+-
+-        Pose2d starter = new Pose2d(0, 0, Math.toRadians(0));
+-        drive.setPoseEstimate(starter);
+-
+-        waitForStart();
+-
+-        if(isStopRequested()) return;
+-
+-        while(opModeIsActive()) {
+-            drive.update();
+-            Pose2d myPose = drive.getPoseEstimate();
+-
+-
+-            telemetry.addData("x", myPose.getX());
+-            telemetry.addData("y", myPose.getY());
+-            telemetry.addData("heading", myPose.getHeading());
+-
+-            // ----------*----------------------
+-
+-            double x = gamepad1.left_stick_x;
+-            double y = -gamepad1.left_stick_y;
+-            double rx = gamepad1.right_stick_x;
+-
+-            // Set drive power
+-            robot.setDrivePower(x, y, rx);
+-
+-        }
+-    }
+-
+-    class Robot {
+-        private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+-
+-        public Robot(HardwareMap hardwareMap) {
+-            // Initialize motors
+-            leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+-            leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+-            rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+-            rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+-
+-            // Reverse right side motor directions
+-            // This may need to be flipped to the left side depending on your motor rotation direction
+-            rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+-            rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+-
+-            // Turn on bulk reads to help optimize loop times
+-            for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+-                module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+-            }
+-        }
+-
+-        // Mecanum example code from gm0
+-        // https://gm0.org/en/stable/docs/software/mecanum-drive.html
+-        public void setDrivePower(double x, double y, double rx) {
+-            double powerFrontLeft = y + x + rx;
+-            double powerFrontRight = y - x - rx;
+-            double powerBackLeft = y - x + rx;
+-            double powerBackRight = y + x - rx;
+-
+-            if (Math.abs(powerFrontLeft) > 1 || Math.abs(powerBackLeft) > 1 ||
+-                    Math.abs(powerFrontRight) > 1 || Math.abs(powerBackRight) > 1) {
+-                // Find the largest power
+-                double max;
+-                max = Math.max(Math.abs(powerFrontLeft), Math.abs(powerBackLeft));
+-                max = Math.max(Math.abs(powerFrontRight), max);
+-                max = Math.max(Math.abs(powerBackRight), max);
+-
+-                // Divide everything by max (it's positive so we don't need to worry
+-                // about signs)
+-                powerFrontLeft /= max;
+-                powerBackLeft /= max;
+-                powerFrontRight /= max;
+-                powerBackRight /= max;
+-            }
+-
+-            leftFront.setPower(powerFrontLeft);
+-            rightFront.setPower(powerFrontRight);
+-            leftRear.setPower(powerBackLeft);
+-            rightRear.setPower(powerBackRight);
+-        }
+-    }
+-
+-}
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/FastTeleOp.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- TeamCode/src/main/java/org/firstinspires/ftc/teamcode/FastTeleOp.java	(date 1635346734232)
++++ TeamCode/src/main/java/org/firstinspires/ftc/teamcode/FastTeleOp.java	(date 1635346734232)
+@@ -0,0 +1,115 @@
++/* Copyright (c) 2017 FIRST. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without modification,
++ * are permitted (subject to the limitations in the disclaimer below) provided that
++ * the following conditions are met:
++ *
++ * Redistributions of source code must retain the above copyright notice, this list
++ * of conditions and the following disclaimer.
++ *
++ * Redistributions in binary form must reproduce the above copyright notice, this
++ * list of conditions and the following disclaimer in the documentation and/or
++ * other materials provided with the distribution.
++ *
++ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
++ * promote products derived from this software without specific prior written permission.
++ *
++ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
++ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
++ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
++
++package org.firstinspires.ftc.robotcontroller.external.samples;
++
++import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
++import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
++import com.qualcomm.robotcore.eventloop.opmode.Disabled;
++import com.qualcomm.robotcore.hardware.DcMotor;
++import com.qualcomm.robotcore.hardware.DcMotorSimple;
++import com.qualcomm.robotcore.hardware.Servo;
++import com.qualcomm.robotcore.util.ElapsedTime;
++import com.qualcomm.robotcore.util.Range;
++
++
++/**
++ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
++ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
++ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
++ * class is instantiated on the Robot Controller and executed.
++ *
++ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
++ * It includes all the skeletal structure that all linear OpModes contain.
++ *
++ * Use Androaa Studios to Copy this Class, and Paste it into your team's code folder with a new name.
++ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
++ */
++
++@TeleOp(name="AA", group="Linear Opmode")
++public class BasicOpMode_Linear extends LinearOpMode {
++
++    // Declare OpMode members.
++    private ElapsedTime runtime = new ElapsedTime();
++    private DcMotor leftDrive = null;
++    private DcMotor rightDrive = null;
++    private DcMotor mlb = null;
++    private DcMotor mrb = null;
++    private DcMotor s = null;
++    private DcMotor r = null;
++    @Override
++    public void runOpMode() {
++        telemetry.addData("Status", "Initialized");
++        telemetry.update();
++
++        // Initialize the hardware variables. Note that the strings used here as parameters
++        // to 'get' must correspond to the names assigned during the robot configuration
++        // step (using the FTC Robot Controller app on the phone).
++
++        leftDrive = hardwareMap.get(DcMotor.class,"left_drive");
++        rightDrive = hardwareMap.get(DcMotor.class,"right_drive");
++        mlb = hardwareMap.get(DcMotor.class,"mlb");
++        mrb = hardwareMap.get(DcMotor.class,"mrb");
++        s = hardwareMap.get(DcMotor.class,"s");
++        r = hardwareMap.get(DcMotor.class,"r");
++        // Most robots need the motor on one side to be reversed to drive forward
++        // Reverse the motor that runs backwards when connected directly to the battery
++        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
++        // Wait for the game to start (driver presses PLAY)
++        waitForStart();
++        runtime.reset();
++        // run until he end of the match (driver presses STOP)
++        while (opModeIsActive())
++            leftDrive.setPower(gamepad1.left_stick_y);
++            rightDrive.setPower(gamepad1.left_stick_y);
++            mlb.setPower(gamepad1.left_stick_y);
++            mrb.setPower(gamepad1.left_stick_y);
++            s.setPower(gamepad1.right_stick_y);
++            r.setPower(gamepad1.right_stick_x);
++
++            // Show the elapsed game time and wheel po
++            /////          //
++            //
++            // wer.
++            if (gamepad1.left_stick_y != 0) {
++                leftDrive.setPower(gamepad1.left_stick_y);
++                rightDrive.setPower(gamepad1.left_stick_y);
++                mlb.setPower(gamepad1.left_stick_y);
++                mrb.setPower(gamepad1.left_stick_y);
++            }  else if (gamepad1.left_stick_x != 0) {
++                leftDrive.setPower(-gamepad1.left_stick_x);
++                rightDrive.setPower(-gamepad1.left_stick_x);
++                mlb.setPower(gamepad1.left_stick_x);
++                mrb.setPower(gamepad1.left_stick_x);
++            }  else if (gamepad1.right_stick_y != 0) {
++                s.setPower(gamepad1.right_stick_y);
++            }  else if (gamepad1.right_stick_x != 0) {
++                r.setPower(gamepad1.right_stick_x);
++            }
++
+Index: FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcOpModeRegister.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* Copyright (c) 2014, 2015 Qualcomm Technologies Inc\r\n\r\nAll rights reserved.\r\n\r\nRedistribution and use in source and binary forms, with or without modification,\r\nare permitted (subject to the limitations in the disclaimer below) provided that\r\nthe following conditions are met:\r\n\r\nRedistributions of source code must retain the above copyright notice, this list\r\nof conditions and the following disclaimer.\r\n\r\nRedistributions in binary form must reproduce the above copyright notice, this\r\nlist of conditions and the following disclaimer in the documentation and/or\r\nother materials provided with the distribution.\r\n\r\nNeither the name of Qualcomm Technologies Inc nor the names of its contributors\r\nmay be used to endorse or promote products derived from this software without\r\nspecific prior written permission.\r\n\r\nNO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS\r\nLICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\r\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\r\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\r\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE\r\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\r\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\r\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\r\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\r\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\r\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */\r\n\r\npackage org.firstinspires.ftc.robotcontroller.internal;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.OpModeManager;\r\nimport com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;\r\n\r\nimport org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;\r\n\r\n/**\r\n * {@link FtcOpModeRegister} is responsible for registering opmodes for use in an FTC game.\r\n * @see #register(OpModeManager)\r\n */\r\npublic class FtcOpModeRegister implements OpModeRegister {\r\n\r\n    /**\r\n     * {@link #register(OpModeManager)} is called by the SDK game in order to register\r\n     * OpMode classes or instances that will participate in an FTC game.\r\n     *\r\n     * There are two mechanisms by which an OpMode may be registered.\r\n     *\r\n     *  1) The preferred method is by means of class annotations in the OpMode itself.\r\n     *  See, for example the class annotations in {@link ConceptNullOp}.\r\n     *\r\n     *  2) The other, retired,  method is to modify this {@link #register(OpModeManager)}\r\n     *  method to include explicit calls to OpModeManager.register().\r\n     *  This method of modifying this file directly is discouraged, as it\r\n     *  makes updates to the SDK harder to integrate into your code.\r\n     *\r\n     * @param manager the object which contains methods for carrying out OpMode registrations\r\n     *\r\n     * @see com.qualcomm.robotcore.eventloop.opmode.TeleOp\r\n     * @see com.qualcomm.robotcore.eventloop.opmode.Autonomous\r\n     */\r\n    public void register(OpModeManager manager) {\r\n\r\n        /**\r\n         * Any manual OpMode class registrations should go here.\r\n         */\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcOpModeRegister.java	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcOpModeRegister.java	(date 1635346734241)
+@@ -1,70 +1,60 @@
+-/* Copyright (c) 2014, 2015 Qualcomm Technologies Inc
+-
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without modification,
+-are permitted (subject to the limitations in the disclaimer below) provided that
+-the following conditions are met:
+-
+-Redistributions of source code must retain the above copyright notice, this list
+-of conditions and the following disclaimer.
+-
+-Redistributions in binary form must reproduce the above copyright notice, this
+-list of conditions and the following disclaimer in the documentation and/or
+-other materials provided with the distribution.
+-
+-Neither the name of Qualcomm Technologies Inc nor the names of its contributors
+-may be used to endorse or promote products derived from this software without
+-specific prior written permission.
+-
+-NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+-LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
+-
+-package org.firstinspires.ftc.robotcontroller.internal;
++@TeleOp(name="AA", group="Linear Opmode")
++public class BasicOpMode_Linear extends LinearOpMode {
+ 
+-import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
+-import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
++    // Declare OpMode members.
++    private ElapsedTime runtime = new ElapsedTime();
++    private DcMotor leftDrive = null;
++    private DcMotor rightDrive = null;
++    private DcMotor mlb = null;
++    private DcMotor mrb = null;
++    private DcMotor s = null;
++    private DcMotor r = null;
++    @Override
++    public void runOpMode() {
++        telemetry.addData("Status", "Initialized");
++        telemetry.update();
+ 
+-import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
++        // Initialize the hardware variables. Note that the strings used here as parameters
++        // to 'get' must correspond to the names assigned during the robot configuration
++        // step (using the FTC Robot Controller app on the phone).
+ 
+-/**
+- * {@link FtcOpModeRegister} is responsible for registering opmodes for use in an FTC game.
+- * @see #register(OpModeManager)
+- */
+-public class FtcOpModeRegister implements OpModeRegister {
++        leftDrive = hardwareMap.get(DcMotor.class,"left_drive");
++        rightDrive = hardwareMap.get(DcMotor.class,"right_drive");
++        mlb = hardwareMap.get(DcMotor.class,"mlb");
++        mrb = hardwareMap.get(DcMotor.class,"mrb");
++        s = hardwareMap.get(DcMotor.class,"s");
++        r = hardwareMap.get(DcMotor.class,"r");
++        // Most robots need the motor on one side to be reversed to drive forward
++        // Reverse the motor that runs backwards when connected directly to the battery
++        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
++        // Wait for the game to start (driver presses PLAY)
++        waitForStart();
++        runtime.reset();
++        // run until he end of the match (driver presses STOP)
++        while (opModeIsActive())
++            leftDrive.setPower(gamepad1.left_stick_y);
++        rightDrive.setPower(gamepad1.left_stick_y);
++        mlb.setPower(gamepad1.left_stick_y);
++        mrb.setPower(gamepad1.left_stick_y);
++        s.setPower(gamepad1.right_stick_y);
++        r.setPower(gamepad1.right_stick_x);
+ 
+-    /**
+-     * {@link #register(OpModeManager)} is called by the SDK game in order to register
+-     * OpMode classes or instances that will participate in an FTC game.
+-     *
+-     * There are two mechanisms by which an OpMode may be registered.
+-     *
+-     *  1) The preferred method is by means of class annotations in the OpMode itself.
+-     *  See, for example the class annotations in {@link ConceptNullOp}.
+-     *
+-     *  2) The other, retired,  method is to modify this {@link #register(OpModeManager)}
+-     *  method to include explicit calls to OpModeManager.register().
+-     *  This method of modifying this file directly is discouraged, as it
+-     *  makes updates to the SDK harder to integrate into your code.
+-     *
+-     * @param manager the object which contains methods for carrying out OpMode registrations
+-     *
+-     * @see com.qualcomm.robotcore.eventloop.opmode.TeleOp
+-     * @see com.qualcomm.robotcore.eventloop.opmode.Autonomous
+-     */
+-    public void register(OpModeManager manager) {
+-
+-        /**
+-         * Any manual OpMode class registrations should go here.
+-         */
+-    }
+-}
++        // Show the elapsed game time and wheel po
++        /////          //
++        //
++        // wer.
++        if (gamepad1.left_stick_y != 0) {
++            leftDrive.setPower(gamepad1.left_stick_y);
++            rightDrive.setPower(gamepad1.left_stick_y);
++            mlb.setPower(gamepad1.left_stick_y);
++            mrb.setPower(gamepad1.left_stick_y);
++        }  else if (gamepad1.left_stick_x != 0) {
++            leftDrive.setPower(-gamepad1.left_stick_x);
++            rightDrive.setPower(-gamepad1.left_stick_x);
++            mlb.setPower(gamepad1.left_stick_x);
++            mrb.setPower(gamepad1.left_stick_x);
++        }  else if (gamepad1.right_stick_y != 0) {
++            s.setPower(gamepad1.right_stick_y);
++        }  else if (gamepad1.right_stick_x != 0) {
++            r.setPower(gamepad1.right_stick_x);
++        }
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 083306be81e2ceff03f843347df005b323a54ab6)
++++ .idea/misc.xml	(date 1634215651226)
+@@ -1,4 +1,4 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
