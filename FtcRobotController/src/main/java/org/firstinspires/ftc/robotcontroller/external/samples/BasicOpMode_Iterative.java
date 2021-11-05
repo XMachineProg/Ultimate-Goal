@@ -71,7 +71,7 @@ public class BasicOpMode_Iterative extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive = dwareMap.get(DcMotor.class,"left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class,"left_drive");
         rightDrive = hardwareMap.get(DcMotor.class,"right_drive");
         mrb = hardwareMap.get(DcMotor.class,"mrb");
         mlb = hardwareMap.get(DcMotor.class,"mlb");
@@ -119,6 +119,8 @@ public class BasicOpMode_Iterative extends OpMode
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+
+
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
         // Tank Mode uses one stick to control each wheel.
