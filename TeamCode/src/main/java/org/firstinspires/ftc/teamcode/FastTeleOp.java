@@ -27,11 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -52,16 +53,19 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="AA", group="Linear Opmode")
-public class BasicOpMode_Linear extends LinearOpMode {
+@TeleOp(name="Tele Op", group="Test")
+public class FastTeleOp extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive  = null;
-    private DcMotor rightDrive = null;
+    private DcMotor mlf  = null;
+    private DcMotor mrf = null;
     private DcMotor mlb = null;
     private DcMotor mrb = null;
-    private DcMotor s   = null;
+    private CRServo craw = null;
+    private DcMotor mc = null;
+
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -71,42 +75,51 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
 
-        leftDrive = hardwareMap.get(DcMotor.class,"left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class,"right_drive");
+        mlf = hardwareMap.get(DcMotor.class,"mlf");
+        mrf = hardwareMap.get(DcMotor.class,"mrf");
         mlb = hardwareMap.get(DcMotor.class,"mlb");
         mrb = hardwareMap.get(DcMotor.class,"mrb");
-        s = hardwareMap.get(DcMotor.class,"s");
-         // Most robots need the motor on one side to be reversed to drive forward
+        craw = hardwareMap.get(CRServo.class, "craw");
+        //mc = hardwareMap.get(DcMotor.class, "mc");
+        // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-       // run until he end of the match (driver presses STOP)
+        // run until he end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            leftDrive.setPower(gamepad1.left_stick_y);
-            rightDrive.setPower(gamepad1.left_stick_y);
-            mlb.setPower(gamepad1.left_stick_y);
-            mrb.setPower(gamepad1.left_stick_y);
-            s.setPower(gamepad1.right_stick_y);
-
-            // Show the elapsed game time and wheel po
-  /////          //
-            // wer.
+            if (gamepad1.right_trigger != 0) {
+                craw.setPower(gamepad1.right_trigger);
+            }
+          //  if (gamepad2.left_stick_y != 0) {
+          //      mc.setPower(gamepad2.left_stick_y);
+          //  }
 
             if (gamepad1.left_stick_y != 0) {
-                leftDrive.setPower(gamepad1.left_stick_y);
-                rightDrive.setPower(gamepad1.left_stick_y);
+                mlf.setPower(gamepad1.left_stick_y);
+                mrf.setPower(gamepad1.left_stick_y);
                 mlb.setPower(gamepad1.left_stick_y);
                 mrb.setPower(gamepad1.left_stick_y);
             } else if (gamepad1.left_stick_x != 0) {
-                leftDrive.setPower(-gamepad1.left_stick_x);
-                rightDrive.setPower(gamepad1.left_stick_x);
+                mlf.setPower(-gamepad1.left_stick_x);
+                mrf.setPower(gamepad1.left_stick_x);
                 mlb.setPower(-gamepad1.left_stick_x);
                 mrb.setPower(gamepad1.left_stick_x);
-            }  else if (gamepad1.right_stick_y != 0) {
-                s.setPower(gamepad1.right_stick_x);
+            } else if (gamepad1.right_stick_y != 0) {
+                mlf.setPower(gamepad1.right_stick_y);
+                mlb.setPower(gamepad1.right_stick_y);
+            } else if (gamepad1.right_stick_x != 0) {
+                mrf.setPower(gamepad1.right_stick_x);
+                mrb.setPower(gamepad1.right_stick_x);
             }
+
+
+            craw.setPower(0);
+            mlf.setPower(0);
+            mrf.setPower(0);
+            mlb.setPower(0);
+            mrb.setPower(0);
 
 
 

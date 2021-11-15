@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>build.gradle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #8c8c8c; font-style: italic;}
+.s3 { color: #067d17;}
+.s4 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+build.gradle</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java.text.SimpleDateFormat</span>
+
+<span class="s2">//</span>
+<span class="s2">// build.gradle in FtcRobotController</span>
+<span class="s2">//</span>
+<span class="s1">apply plugin: </span><span class="s3">'com.android.library'</span>
+
+<span class="s1">android {</span>
+
+    <span class="s1">defaultConfig {</span>
+        <span class="s1">minSdkVersion </span><span class="s4">23</span>
+        <span class="s1">targetSdkVersion </span><span class="s4">28</span>
+        <span class="s1">buildConfigField </span><span class="s3">&quot;String&quot;</span><span class="s1">, </span><span class="s3">&quot;BUILD_TIME&quot;</span><span class="s1">, </span><span class="s3">'&quot;' </span><span class="s1">+ (</span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;yyyy-MM-dd'T'HH:mm:ss.SSSZ&quot;</span><span class="s1">, Locale.ROOT).format(</span><span class="s0">new </span><span class="s1">Date())) + </span><span class="s3">'&quot;'</span>
+    <span class="s1">}</span>
+
+    <span class="s1">compileSdkVersion </span><span class="s4">29</span>
+
+    <span class="s1">compileOptions {</span>
+        <span class="s1">sourceCompatibility JavaVersion.VERSION_1_8</span>
+        <span class="s1">targetCompatibility JavaVersion.VERSION_1_8</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s1">apply from: </span><span class="s3">'../build.dependencies.gradle'</span>
+</pre>
+</body>
+</html>

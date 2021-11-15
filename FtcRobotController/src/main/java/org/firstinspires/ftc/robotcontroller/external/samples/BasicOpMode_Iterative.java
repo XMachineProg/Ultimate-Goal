@@ -58,6 +58,8 @@ public class BasicOpMode_Iterative extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor mrb = null;
+    private DcMotor mlb = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -69,8 +71,10 @@ public class BasicOpMode_Iterative extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        leftDrive = hardwareMap.get(DcMotor.class,"left_drive");
+        rightDrive = hardwareMap.get(DcMotor.class,"right_drive");
+        mrb = hardwareMap.get(DcMotor.class,"mrb");
+        mlb = hardwareMap.get(DcMotor.class,"mlb");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -78,7 +82,9 @@ public class BasicOpMode_Iterative extends OpMode
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "" +
+                "" +
+                "Initialized");
     }
 
     /*
@@ -113,6 +119,8 @@ public class BasicOpMode_Iterative extends OpMode
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
         leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+
+
         rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
         // Tank Mode uses one stick to control each wheel.
